@@ -1,6 +1,5 @@
-# Build a Student Intervention System
+# Identify Fraud from Enron Email
 
-Supervised Learning Project
 
 ## Install
 
