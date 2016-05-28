@@ -36,4 +36,4 @@ email features: ['to_messages', 'email_address', 'from_poi_to_this_person', 'fro
 - Units are generally number of emails messages; notable exception is ‘email_address’, which is a text string
 
 POI label: [‘poi’] 
-- boolean, represented as integer
+- Boolean, represented as integer
