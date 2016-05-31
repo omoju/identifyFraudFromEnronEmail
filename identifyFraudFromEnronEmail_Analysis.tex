@@ -99,7 +99,7 @@ What features did you end up using in your POI identifier, and what selection pr
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: ``pick an algorithm'']
 
 
-What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: ``tune the algorithm'']
+What does it mean to tune the parameters of an algorithm, and what can happen if you don't do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: ``tune the algorithm'']
 
 
 What is validation, and what's a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric item: ``validation strategy'']
@@ -108,7 +108,8 @@ What is validation, and what's a classic mistake you can make if you do it wrong
 Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm's performance. [relevant rubric item: ``usage of evaluation metrics'']
 
 
-Techniques and algorithms that have stemmed from the field of {\it machine learning} have
+\begin{quote}
+Techniques and algorithms that have stemmed from the field of \textit{machine learning} have
 indeed now become a powerful tool for the analysis of complex and large data,
 successfully assisting scientists in numerous breakthroughs of various fields
 of science and technology. Public and famous examples include the use of
@@ -118,55 +119,9 @@ human pose detection in the Microsoft Kinect~\citep{criminisi:2013} or the
 implementation of various machine learning techniques for building the IBM
 Watson system~\citep{ferrucci:2010}, capable to compete at the human champion
 level on the American TV quiz show Jeopardy.
+\end{quote}
 
 
-\begin{enumerate}
-\item First, the theoretical properties and statistical mechanisms that drive
-the algorithm are still not clearly and entirely understood. Random forests
-indeed evolved from empirical successes rather than from a sound
-theory. As such, various parts of the algorithm remain heuristic rather than
-theoretically motivated. For example, preliminary
-results have proven the consistency of simplified to very close variants of
-random forests, but consistency of the original algorithm remains unproven
-in a general setting.
-\item Second, while the construction process of a single decision tree can
-easily be described within half a page, implementing this algorithm properly
-and efficiently remains a challenging task involving issues that are easily
-overlooked. Unfortunately, implementation details are often omitted in the
-scientific literature and can often only be found by diving into
-(unequally documented) existing software implementations. As far as we know,
-there is indeed no comprehensive survey covering the implementation details of
-random forests, nor with their respective effects in terms of runtime and space
-complexity or learning ability.
-\item Third, interpreting the resulting model remains a difficult task,
-for which even machine learning experts still fail at finely analyzing and
-uncovering the precise predictive structure learned by the procedure.
-In particular, despite their extensive use in a wide range of applications, little
-is still known regarding variable importance measures computed by random forests.
-Empirical evidence suggests that they are appropriate for identifying
-relevant variables, but their statistical mechanisms and properties are
-still far from being understood.
-\end{enumerate}
-
-
-\section{Outline and contributions}
-
-Part~\textsc{\ref{part:1}} of this manuscript is first dedicated to a thorough
-treatment of decision trees and forests of randomized trees. We begin in
-Chapter~\ref{ch:background} by outlining fundamental concepts of machine
-learning, and then proceed in Chapters~\ref{ch:cart} and \ref{ch:forest} with a
-comprehensive review of the algorithms at the core of decision trees and random
-forests. We discuss the learning capabilities of these models and carefully
-study all parts of the algorithm and their complementary effects. In particular,
-Chapter~\ref{ch:forest} includes original contributions on the bias-variance
-analysis of ensemble methods, highlighting how randomization can help improve
-performance. Chapter~\ref{ch:complexity} concludes this first part with an
-original space and time complexity analysis of random forests (and their
-variants), along with an in-depth discussion of implementation details,
-as contributed within the open source Scikit-Learn library.
-Overall, Part~\textsc{\ref{part:1}} therefore presents a comprehensive review
-of previous work on random forests, including some original contributions
-both from a theoretical and practical point of view.
 
 
 
