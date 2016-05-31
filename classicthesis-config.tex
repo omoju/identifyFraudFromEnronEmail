@@ -14,7 +14,7 @@
 % 1. Configure classicthesis for your needs here, e.g., remove "drafting" below
 % in order to deactivate the time-stamp on the pages
 % ****************************************************************************************************
-\PassOptionsToPackage{eulerchapternumbers,listings,%drafting,%
+\PassOptionsToPackage{listings,%drafting,% %eulerchapternumbers,%
 				 pdfspacing,eulermath,%floatperchapter,%linedheaders,%
 				 subfig,parts,dottedtoc}{classicthesis}
 % ********************************************************************
@@ -72,8 +72,10 @@
 % ********************************************************************
 % Packages with options that might require adjustments
 % ********************************************************************
-\PassOptionsToPackage{latin9}{inputenc}	% latin9 (ISO-8859-9) = latin1+"Euro sign"
- \usepackage{inputenc}
+%\PassOptionsToPackage{latin9}{inputenc}	% latin9 (ISO-8859-9) = latin1+"Euro sign"
+% \usepackage{inputenc}
+
+\usepackage[applemac]{inputenc}
 
 %\PassOptionsToPackage{ngerman,american}{babel}   % change this to your language(s)
 % Spanish languages need extra options in order to work with this template
@@ -91,6 +93,8 @@
 % ********************************************************************
 \PassOptionsToPackage{T1}{fontenc} % T2A for cyrillics
 	\usepackage{fontenc}
+
+
 \usepackage{lipsum}
 \usepackage{textcomp} % fix warning with missing font shapes
 %\usepackage{scrhack} % fix warnings when using KOMA with listings package
