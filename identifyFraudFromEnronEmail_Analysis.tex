@@ -81,45 +81,202 @@
 \pagenumbering{roman}
 \pagestyle{plain}
 
+% Front pages =================================================================
 
+\include{titlepage}
 
 % Content =====================================================================
+
 \pagenumbering{arabic}
 
 \cleardoublepage
 
-\chapter *{Identify Fraud From Enron Email}
 
-Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those? [relevant rubric items: ``data exploration'', ``outlier investigation'']
+\chapter*{Identify Fraud From Enron Email}
+
+%----------------------------------------------------------------------------------------
+%  CHAPTER CONTENTS
+%----------------------------------------------------------------------------------------
 
 
-What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not? As part of the assignment, you should attempt to engineer your own feature that does not come ready-made in the dataset -- explain what feature you tried to make, and the rationale behind it. (You do not necessarily have to use it in the final analysis, only engineer and test it.) In your feature selection step, if you used an algorithm like a decision tree, please also give the feature importances of the features that you use, and if you used an automated feature selection function like SelectKBest, please report the feature scores and reasons for your choice of parameter values.  [relevant rubric items: ``create new features'', ``properly scale features'', ``intelligently select feature'']
+\section*{Project Overview}
 
+In this section, look to provide a high-level overview of the project in layman's terms. Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. 
+
+
+Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?
+\item Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?
+\end{itemize}
+
+\section*{Problem Statement}
+
+In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
+
+\begin{itemize}% 
+\item Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?
+\item Have you thoroughly discussed how you will attempt to solve the problem?
+\item Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?
+\end{itemize}
+
+
+\section*{Metrics}
+
+In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?
+\item Have you provided reasonable justification for the metrics chosen based on the problem and solution?
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%  CHAPTER 
+%----------------------------------------------------------------------------------------
+
+\chapter*{Analysis}
+
+\section*{Data Exploration}
+
+In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). 
+
+As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those? [relevant rubric items: ``data exploration'', ``outlier investigation'']. 
+
+Questions to ask yourself when writing this section:
+
+\begin{itemize}% 
+\item If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?
+\item If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?
+\item If a dataset is not present for this problem, has discussion been made about the input space or input data for your problem?
+\item Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)
+\end{itemize}
+
+\section*{Exploratory Visualization}
+
+In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Have you visualized a relevant characteristic or feature about the dataset or input data?
+\item Is the visualization thoroughly analyzed and discussed?
+\item If a plot is provided, are the axes, title, and datum clearly defined?
+\end{itemize}
+
+\section*{Algorithms and Techniques}
+
+In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. 
 
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: ``pick an algorithm'']
 
+Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
+\item Are the techniques to be used thoroughly discussed and justified?
+\item Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?
+\end{itemize}
+
+\section*{Benchmark}
+
+In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Has some result or value been provided that acts as a benchmark for measuring performance?
+\item Is it clear how this result or value was obtained (whether by data or by hypothesis)?
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%  CHAPTER 
+%----------------------------------------------------------------------------------------
+\chapter*{Methodology}
+
+\section*{Data Preprocessing}
+In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. 
+
+What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not? As part of the assignment, you should attempt to engineer your own feature that does not come ready-made in the dataset -- explain what feature you tried to make, and the rationale behind it. (You do not necessarily have to use it in the final analysis, only engineer and test it.) 
+
+In your feature selection step, if you used an algorithm like a decision tree, please also give the feature importances of the features that you use, and if you used an automated feature selection function like SelectKBest, please report the feature scores and reasons for your choice of parameter values.  [relevant rubric items: ``create new features'', ``properly scale features'', ``intelligently select feature'']
+
+Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?
+\item Based on the Data Exploration section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?
+\item If no preprocessing is needed, has it been made clear why?
+\end{itemize}
+
+\section*{Implementation}
+In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?
+\item Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?
+\item Was there any part of the coding process (e.g., writing complicated functions) that should be documented?
+\end{itemize}
+
+
+\section*{Refinement}
+In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. 
 
 What does it mean to tune the parameters of an algorithm, and what can happen if you don't do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: ``tune the algorithm'']
 
+Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Has an initial solution been found and clearly reported?
+\item Is the process of improvement clearly documented, such as what techniques were used?
+\item Are intermediate and final solutions clearly reported as the process is improved?
+\end{itemize}
+%----------------------------------------------------------------------------------------
+%  CHAPTER 
+%----------------------------------------------------------------------------------------
 
-What is validation, and what's a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric item: ``validation strategy'']
+\chapter*{Results}
 
 
-Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm's performance. [relevant rubric item: ``usage of evaluation metrics'']
+\section*{Model Evaluation and Validation}
+In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). 
 
 
-\begin{quote}
-Techniques and algorithms that have stemmed from the field of \textit{machine learning} have
-indeed now become a powerful tool for the analysis of complex and large data,
-successfully assisting scientists in numerous breakthroughs of various fields
-of science and technology. Public and famous examples include the use of
-boosted decision trees in the statistical analysis that led to the detection of
-the Higgs boson at CERN~\citep{chatrchyan:2012}, the use of random forests for
-human pose detection in the Microsoft Kinect~\citep{criminisi:2013} or the
-implementation of various machine learning techniques for building the IBM
-Watson system~\citep{ferrucci:2010}, capable to compete at the human champion
-level on the American TV quiz show Jeopardy.
-\end{quote}
+Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?
+\item Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?
+\item Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?
+\item Can results found from the model be trusted?
+\end{itemize}
+
+\section*{Justification}
+In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Are the final results found stronger than the benchmark result reported earlier?
+\item Have you thoroughly analyzed and discussed the final solution?
+\item Is the final solution significant enough to have solved the problem?
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%  CHAPTER 
+%----------------------------------------------------------------------------------------
+
+\chapter*{Conclusion}
+
+\section*{Free-Form Visualization}
+In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Have you visualized a relevant or important quality about the problem, dataset, input data, or results?
+\item Is the visualization thoroughly analyzed and discussed?
+\item If a plot is provided, are the axes, title, and datum clearly defined?
+\end{itemize}
+
+
+\section*{Reflection}
+In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Have you thoroughly summarized the entire process you used for this project?
+\item Were there any interesting aspects of the project?
+\item Were there any difficult aspects of the project?
+\item Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?
+\end{itemize}
+
+\section*{Improvement}
+In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
+\begin{itemize}% 
+\item Are there further improvements that could be made on the algorithms or techniques you used in this project?
+\item Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?
+\item If you used your final solution as the new benchmark, do you think an even better solution exists?
+\end{itemize}
 
 
 
