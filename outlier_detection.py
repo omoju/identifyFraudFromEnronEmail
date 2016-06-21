@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 def compareTwoFeatures(feature1, feature2, data_dict):
     """
-    Compare two features in a scatter plot.
+    Compare two features in a scatter plot and returns the datapoints
    
     Keyword arguments:
     feature1 -- an (n x k) numpy array where n is 2 and k datapoints 
@@ -25,4 +25,11 @@ def compareTwoFeatures(feature1, feature2, data_dict):
 
     plt.xlabel(feature1)
     plt.ylabel(feature2)
+    plt.grid(True)
+    _= plt.title('Comparing two features for outliers')
     plt.show() 
+    
+    return data
+
+    
+    
