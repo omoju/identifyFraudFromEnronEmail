@@ -46,13 +46,13 @@
   \end{shaded}%
 }
 
-% Code snippets
-%\usepackage{color}
 
+
+% Code snippets
 \usepackage{color}
 \definecolor{rulecolor}{rgb}{0.80,0.80,0.80}
 \definecolor{bgcolor}{rgb}{1.0,1.0,1.0}
-%\newminted{python}{bgcolor=bgcolor}
+
 
 % Todo
 \newcommand{\todo}[1]{\textcolor{red}{[TODO] #1}}
@@ -150,6 +150,25 @@ Questions to ask yourself when writing this section:
 \item Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)
 \end{itemize}
 
+\subsection*{Outlier detection}
+So whose bonus is 97343619?\\
+\texttt{TOTAL salary is  \$26,704,229.00 bonus \$97,343,619.00}\\
+Found the source of the outlier. It was the TOTAL row that was mistakenly read into the data dict
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=0.5\textwidth]{figures/salary_v_bonus}
+    \label{SalaryBonus}}
+    \subfloat[]{%
+    \includegraphics[width=0.5\textwidth]{figures/salary_v_bonus2}
+    \label{SalaryBonus2}}
+    
+    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
+\end{figure}
+
+
+
+
 \section*{Exploratory Visualization}
 
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
@@ -198,6 +217,7 @@ Questions to ask yourself when writing this section:
 \item Based on the Data Exploration section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?
 \item If no preprocessing is needed, has it been made clear why?
 \end{itemize}
+
 
 \section*{Implementation}
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
