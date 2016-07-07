@@ -57,6 +57,22 @@ def computeFraction( poi_messages, all_messages ):
 
     return fraction
 
+def findPersonBasedOnTwoFeatures(feature1, feature2, treshold=1):
+    """
+    Compare two features based on a treshold
+   
+    Keyword arguments:
+    feature1 -- a string representing a data feature like 'salary'
+    feature2 -- a string representing a data feature like 'salary'
+    treshold -- an int
+   
+    """
+    for key, value in data_dict.iteritems():
+        if (value[feature1] != "NaN") and (value[feature2] != "NaN" and value[feature2] > treshold):
+            print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(key, feature1+' is ', 
+                                                             value[feature1], ' '+feature2+' is ', value[feature2])
+
+
 
     
     
