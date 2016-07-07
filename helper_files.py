@@ -6,7 +6,7 @@ sys.path.append(dataPath+'final_project/')
 from feature_format import featureFormat
 import matplotlib.pyplot as plt
 
-def compareTwoFeatures(feature1, feature2, the_data_dict):
+def compareTwoFeatures(feature1, feature2, the_data_dict, title):
     """
     Compare two features in a scatter plot and returns the datapoints
    
@@ -26,7 +26,7 @@ def compareTwoFeatures(feature1, feature2, the_data_dict):
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     plt.grid(True)
-    _= plt.title(feature2.upper()+' versus '+feature1.upper())
+    _= plt.title(title)
     plt.show() 
     
     return data
