@@ -160,26 +160,22 @@ The enron dataset used in the project was created by the Udacity team. It was do
     \caption{\textbf{Data point for Enron Employee Pai Lou.}}
 \end{figure}
 
-while it contains a robust amount of emails, contains data for only about 150 people. Furthermore, the dataset is extremely skewed. 
+While the original enron dataset contained a robust amount of emails, this pared down one contains data for only about 150 people. Furthermore, the dataset is extremely skewed as can be seen from figure \ref{poi}.
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=0.6\textwidth]{figures/poi}
+    \label{poi}}
+    
+    \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
+\end{figure}
 
 
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). 
-
-As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those? [relevant rubric items: ``data exploration'', ``outlier investigation'']. 
-
-Questions to ask yourself when writing this section:
-
-\begin{itemize}% 
-\item If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?
-\item If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?
-\item If a dataset is not present for this problem, has discussion been made about the input space or input data for your problem?
-\item Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)
-\end{itemize}
-
+\begin{itemize}%
 \subsection*{Outlier detection}
 So whose bonus is 97343619?\\
 \texttt{TOTAL salary is  \$26,704,229.00 bonus \$97,343,619.00}\\
-Found the source of the outlier. It was the TOTAL row that was mistakenly read into the data dict
+Found the source of the outliers. It was the TOTAL row that was mistakenly read into the python data dictionary.
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
@@ -189,7 +185,7 @@ Found the source of the outlier. It was the TOTAL row that was mistakenly read i
     \includegraphics[width=0.6\textwidth]{figures/salary_v_bonus2}
     \label{SalaryBonus2}}
     
-    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
+    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outliers present. Figure (b) Same dataset but without the outliers. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outliers.}}
 \end{figure}
 
 
@@ -208,24 +204,24 @@ In this section, you will need to provide some form of visualization that summar
 \centering
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/salary_v_exercised_stock_options}
-    \label{SalaryBonus}}
+    \label{SalaryExercisedStock}}
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/exercised_stock_options}
-    \label{SalaryBonus2}}
+    \label{SalaryExercisedStock2}}
     
-    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
+    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outliers present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
 \end{figure}
 
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
     \includegraphics[width=0.5\textwidth]{figures/salary_v_restricted_stock}
-    \label{SalaryBonus}}
+    \label{SalaryRestrictedStock}}
     \subfloat[]{%
     \includegraphics[width=0.5\textwidth]{figures/restricted_stock}
-    \label{SalaryBonus2}}
+    \label{SalaryRestrictedStock2}}
     
-    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
+    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outliers present. Figure (b) Same dataset but without the outliers. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outliers.}}
 \end{figure}
 
 
