@@ -133,7 +133,7 @@ In this section, you will need to clearly define the metrics or calculations you
 \end{itemize}
 
 accuracy, precision, recall, f1, f2
-true_positives, false_positives, false_negatives, true_negatives)
+true positives, false positives, false negatives, true negatives)
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
@@ -142,6 +142,26 @@ true_positives, false_positives, false_negatives, true_negatives)
 \chapter*{Analysis}
 
 \section*{Data Exploration}
+
+The enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. The features in the data fall into three major types, namely financial features, email features and POI labels.
+
+\begin{itemize}%
+\item financial features:\\ \texttt{salary, deferral\_payments, total\_payments, loan\_advances, bonus, restricted\_stock\_deferred, deferred\_income, total\_stock\_value, expenses, exercised\_stock\_options, other, long\_term\_incentive, restricted\_stock, director\_fees}
+
+\item email features:\\ \texttt{to\_messages, email\_address, from\_poi\_to\_this\_person, from\_messages, from\_this\_person\_to\_poi, shared\_receipt\_with\_poi}
+
+\item POI label:\\ \texttt{poi}
+\end{itemize}
+
+\begin{figure}[!hbtp]
+\centering
+    \includegraphics[width=0.6\textwidth]{figures/pailou}
+    
+    \caption{\textbf{Data point for Enron Employee Pai Lou.}}
+\end{figure}
+
+while it contains a robust amount of emails, contains data for only about 150 people. Furthermore, the dataset is extremely skewed. 
+
 
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). 
 
