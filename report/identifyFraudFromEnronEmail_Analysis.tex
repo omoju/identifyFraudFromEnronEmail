@@ -101,18 +101,26 @@
 
 \section*{Project Overview}
 
-In this section, look to provide a high-level overview of the project in layman's terms. Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. 
+In early 2000s, the Enron corporation of Houston, Texas was considered one of the most profitable energy companies in the United States. Fortune magazine named Enron one of the most innovative companies in the US for six years in a row, 1996 - 2001. However, by late 2001, the Enron corporation filed for bankruptcy after it was revealed that the company overstated its profits and defrauded it share holders of a considerable amount of wealth. Several person were later indicted and convicted of fraud in the Enron case. 
 
+The goal of this project is to use applied machine learning, based on released Enron data---enron emails and financial accounts---to identify persons of interest in the Enron debacle.
 
-Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?
-\item Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?
-\end{itemize}
 
 \section*{Problem Statement}
 
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
+The problem that we are interested in solving is building an algorithm that can help us identify person who might be of interest with regards to fraud at Enron. These persons are predominant Enron employees and consultants who worked at the corporation. 
+
+The dataset that we have available for this task was collected over two weeks in 2002 by the Federal Energy Regulatory Commission (FERC) during its investigation into the case. The dataset contains over 600,000 emails of 158 Enron employees as well as the financial records of stock payments, salary and so forth of those employees.
+
+To identify persons of interest that might have been party to fraud at Enron we suggest the following strategy:
+\begin{enumerate}% 
+\item Explore the dataset to ensure its integrity and understand the context.
+\item Identify features that may be used. If possible, engineer features that might provide greater discrimination.
+\item With the understanding that this a ``classification'' task, explore a couple of classifiers that might be well suited for the problem at hand.
+\item Once classifiers have been identified, tune them for optimality.
+\end{enumerate}
+
+
 
 \begin{itemize}% 
 \item Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?
