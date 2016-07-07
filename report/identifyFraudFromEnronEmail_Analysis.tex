@@ -108,9 +108,9 @@ The goal of this project is to use applied machine learning, based on released E
 
 \section*{Problem Statement}
 
-The problem that we are interested in solving is building an algorithm that can help us identify person who might be of interest with regards to fraud at Enron. These persons are predominant Enron employees and consultants who worked at the corporation. 
+The problem that we are interested in solving is building an algorithm that can help us identify persons who might be of interest with regards to fraud at Enron. These persons are predominantly Enron employees and consultants who worked for the corporation. 
 
-The dataset that we have available for this task was collected over two weeks in 2002 by the Federal Energy Regulatory Commission (FERC) during its investigation into the case. The dataset contains over 600,000 emails of 158 Enron employees as well as the financial records of stock payments, salary and so forth of those employees.
+The dataset that we have available for this task was collected over two weeks in 2002 by the Federal Energy Regulatory Commission (FERC) during its investigation into the case. The dataset contains over 600,000 emails of 158 high-level Enron employees as well as the financial records of stock payments, salary and so forth of those employees.
 
 To identify persons of interest that might have been party to fraud at Enron we suggest the following strategy:
 \begin{enumerate}% 
@@ -122,20 +122,18 @@ To identify persons of interest that might have been party to fraud at Enron we 
 
 
 
-\begin{itemize}% 
-\item Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?
-\item Have you thoroughly discussed how you will attempt to solve the problem?
-\item Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?
-\end{itemize}
-
-
 \section*{Metrics}
+
+The enron dataset while it contains a robust amount of emails, contains data for only about 150 people. As such, 
 
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 \begin{itemize}% 
-\item Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?
+\item Are the metrics you've chosen to measure the performance of your models clearly discussed and defined?
 \item Have you provided reasonable justification for the metrics chosen based on the problem and solution?
 \end{itemize}
+
+accuracy, precision, recall, f1, f2
+true_positives, false_positives, false_negatives, true_negatives)
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
