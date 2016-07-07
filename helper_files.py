@@ -26,7 +26,7 @@ def compareTwoFeatures(feature1, feature2, the_data_dict):
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     plt.grid(True)
-    _= plt.title('Comparing two features for outliers')
+    _= plt.title(feature2.upper()+' versus '+feature1.upper())
     plt.show() 
     
     return data
@@ -79,7 +79,7 @@ def findPersonBasedOnTwoFeatures(feature1, feature2, the_data_dict, treshold=1):
     ### print out in ascending order of feature2    
     temp = sorted(temp, key=getKey)
     for item in temp:    
-        print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(item[0], feature1+' is ', 
+        print "{:20}{:12}${:<12,.2f}{:12}{:<12}".format(item[0], feature1+' is ', 
                                                              item[1], ' '+feature2+' is ', item[2])
     
 
