@@ -67,11 +67,21 @@ def findPersonBasedOnTwoFeatures(feature1, feature2, the_data_dict, treshold=1):
     treshold -- an int
    
     """
+    
+    def getKey(item):
+        return item[2]
+
+    temp = []
     for key, value in the_data_dict.iteritems():
         if (value[feature1] != "NaN") and (value[feature2] != "NaN" and value[feature2] > treshold):
-            print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(key, feature1+' is ', 
-                                                             value[feature1], ' '+feature2+' is ', value[feature2])
-
+            temp.append(( key, value[feature1], value[feature2]))
+            
+    ### print out in ascending order of feature2    
+    temp = sorted(temp, key=getKey)
+    for item in temp:    
+        print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(item[0], feature1+' is ', 
+                                                             item[1], ' '+feature2+' is ', item[2])
+    
 
 
     
