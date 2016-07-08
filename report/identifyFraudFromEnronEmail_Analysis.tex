@@ -71,6 +71,10 @@
 % Wide tables
 \usepackage{ltablex}
 
+%highlighting
+\usepackage{color}
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
 
 % -----------------------------------------------------------------------------
 
@@ -228,29 +232,57 @@ While the original Enron dataset contained a robust amount of emails, this pared
 
 One of the areas we concentrated on was that of compensation. We were very interested in the stock options of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through the stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project. 
 
-To zoom in on the compensation, we focused on two features `exercised\_stock\_options' and `restricted\_stock'.
+To zoom in on the compensation, we focused on two features `exercised\_stock\_options' and `restricted\_stock'. Table \ref{exStTable} shows the employees with the highest exercised stock options. We see that the sitting CEO, Ken Lay, had the highest exercised stock option, that wasn't surprising. What was surprising was the name ``Pai Lou.'' From descriptive statistics on salary, 
 
 \begin{table}[!htbp]
   \begin{center}
     \begin{tabular}{ |l|l|l| } 
     \hline
-     NAME                &  SALARY        &  EXERCISED STOCK OPTIONS \\
-
-     \hline
-
-    FREVERT MARK A      &  \$1,060,932.00  &      10433518\\ 
-    PAI LOU L           &  \$261,879.00    &      15364167\\ 
-    SKILLING JEFFREY K  &  \$1,111,258.00  &      19250000\\ 
-    RICE KENNETH D      &  \$420,636.00    &      19794175\\ 
-    LAY KENNETH L       &  \$1,072,321.00  &      34348384\\
+    NAME                &  SALARY        &  BONUS       \\ 
 
     \hline
+    ALLEN PHILLIP K     &  \$201,955.00    &     4,175,000\\ 
+    BELDEN TIMOTHY N    &  \$213,999.00    &     5,249,999\\ 
+    SKILLING JEFFREY K  &  \$1,111,258.00  &     5,600,000\\ 
+    LAY KENNETH L       &  \$1,072,321.00  &     7,000,000\\ 
+    \hilight{LAVORATO JOHN J}     &  \$339,288.00    &     8,000,000\\ 
+    \hline
+    \multicolumn{3}{|c|}{}\\
+    \hline
+    NAME                &  SALARY        &  EXERCISED STOCK OPTIONS \\
+
+    \hline
+    FREVERT MARK A      &  \$1,060,932.00  &    10,433,518\\ 
+    \hilight{PAI LOU L}           &  \$261,879.00    &    15,364,167\\ 
+    SKILLING JEFFREY K  &  \$1,111,258.00  &    19,250,000\\ 
+    RICE KENNETH D      &  \$420,636.00    &    19,794,175\\ 
+    LAY KENNETH L       &  \$1,072,321.00  &    34,348,384\\ 
+    \hline
+    \multicolumn{3}{|c|}{}\\
+    \hline
+    NAME                &  SALARY        &  RESTRICTED STOCK\\ 
+
+    \hline
+    YEAGER F SCOTT      &  \$158,403.00    &     3,576,206\\ 
+    IZZO LAWRENCE L     &  \$85,274.00     &     3,654,808\\ 
+    BAXTER JOHN C       &  \$267,102.00    &     3,942,714\\ 
+    KEAN STEVEN J       &  \$404,338.00    &     4,131,594\\ 
+    FREVERT MARK A      &  \$1,060,932.00  &     4,188,667\\ 
+    SKILLING JEFFREY K  &  \$1,111,258.00  &     6,843,672\\ 
+    \hilight{PAI LOU L}          &  \$261,879.00    &     8,453,763\\ 
+    WHITE JR THOMAS E   &  \$317,543.00    &    13,847,074\\ 
+    LAY KENNETH L       &  \$1,072,321.00  &    14,761,694\\ 
+    \hline
     \end{tabular}
-    \caption{Salary and exercised stock options data for the five employees with the largest exercised options.}
+    \caption{Financial data on some of Enron's top paid employees.}
     \label{exStTable}
   \end{center}
 \end{table}
 
+
+
+
+LAVORATO JOHN J
 
 
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
