@@ -143,7 +143,34 @@ true positives, false positives, false negatives, true negatives)
 
 \section*{Data Exploration}
 
-The enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. The features in the data fall into three major types, namely financial features, email features and POI labels.
+The enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. 
+\begin{verbatim}
+data_dict['PAI LOU L']
+{'bonus': 1000000,
+ 'deferral_payments': 'NaN',
+ 'deferred_income': 'NaN',
+ 'director_fees': 'NaN',
+ 'email_address': 'lou.pai@enron.com',
+ 'exercised_stock_options': 15364167,
+ 'expenses': 32047,
+ 'fraction_from_poi': 0,
+ 'fraction_to_poi': 0,
+ 'from_messages': 'NaN',
+ 'from_poi_to_this_person': 'NaN',
+ 'from_this_person_to_poi': 'NaN',
+ 'loan_advances': 'NaN',
+ 'long_term_incentive': 'NaN',
+ 'other': 1829457,
+ 'poi': False,
+ 'restricted_stock': 8453763,
+ 'restricted_stock_deferred': 'NaN',
+ 'salary': 261879,
+ 'shared_receipt_with_poi': 'NaN',
+ 'to_messages': 'NaN',
+ 'total_payments': 3123383,
+ 'total_stock_value': 23817930}
+\end{verbatim}
+The features in the data fall into three major types, namely financial features, email features and POI labels.
 
 \begin{itemize}%
 \item financial features:\\ \texttt{salary, deferral\_payments, total\_payments, loan\_advances, bonus, restricted\_stock\_deferred, deferred\_income, total\_stock\_value, expenses, exercised\_stock\_options, other, long\_term\_incentive, restricted\_stock, director\_fees}
@@ -153,12 +180,8 @@ The enron dataset used in the project was created by the Udacity team. It was do
 \item POI label:\\ \texttt{poi}
 \end{itemize}
 
-\begin{figure}[!hbtp]
-\centering
-    \includegraphics[width=0.6\textwidth]{figures/pailou}
-    
-    \caption{\textbf{Data point for Enron Employee Pai Lou.}}
-\end{figure}
+
+
 
 While the original enron dataset contained a robust amount of emails, this pared down one contains data for only about 150 people. Furthermore, the dataset is extremely skewed as can be seen from figure \ref{poi}.
 
@@ -171,8 +194,10 @@ While the original enron dataset contained a robust amount of emails, this pared
     \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
 \end{figure}
 
+\subsection*{Outlier detection}
+ As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first tasked we did was visualize the salary \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a datapoint that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}. 
 
- As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first tasked we did was visualize the salary \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a datapoint that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}.
+ A closer look revealed that the datapoint was an input error which included the TOTAL of all salaries as its own row. The datapoint was removed leaving the dataset in a more realistic state as can be seen from figure \ref{SalaryBonus2}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -180,15 +205,9 @@ While the original enron dataset contained a robust amount of emails, this pared
     \includegraphics[width=0.6\textwidth]{figures/salary}
     \label{salary}}
     
-    \caption{\textbf{Plot of Enron employee sataries.}\textit{ From this visualization, we can see there is a huge spike to the right of datapoint 60, this spike corresponds with an outlier.}}
+    \caption{\textbf{Plot of Enron employee sataries.}\textit{ From this visualization, we can see there is a huge spike to the right of datapoint 60, this spike corresponds with an outlier of value \$26,704,229.00.}}
 \end{figure}
 
-
-
-\subsection*{Outlier detection}
-So whose bonus is 97343619?\\
-\texttt{TOTAL salary is  \$26,704,229.00 bonus \$97,343,619.00}\\
-Found the source of the outlier. It was the TOTAL row that was mistakenly read into the data dict
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
