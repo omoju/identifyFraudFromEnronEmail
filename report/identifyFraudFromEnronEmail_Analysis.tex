@@ -103,7 +103,7 @@
 
 In early 2000s, the Enron corporation of Houston, Texas was considered one of the most profitable energy companies in the United States. Fortune magazine named Enron one of the most innovative companies in the US for six years in a row, 1996 - 2001. However, by late 2001, the Enron corporation filed for bankruptcy after it was revealed that the company overstated its profits and defrauded it share holders of a considerable amount of wealth. Several person were later indicted and convicted of fraud in the Enron case. 
 
-The goal of this project is to use applied machine learning, based on released Enron data---enron emails and financial accounts---to identify persons of interest in the Enron debacle.
+The goal of this project is to use applied machine learning, based on released Enron data---Enron emails and financial accounts---to identify persons of interest in the Enron debacle.
 
 
 \section*{Problem Statement}
@@ -124,7 +124,7 @@ To identify persons of interest that might have been party to fraud at Enron we 
 
 \section*{Metrics}
 
-The enron dataset while it contains a robust amount of emails, contains data for only about 150 people. As such, 
+The Enron dataset while it contains a robust amount of emails, contains data for only about 150 people. As such, 
 
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 \begin{itemize}% 
@@ -143,14 +143,15 @@ true positives, false positives, false negatives, true negatives)
 
 \section*{Data Exploration}
 
-The enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. 
+The Enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. For example \ref{pailou} shows the corresponding key-value data point of Enron executive Pai Lou, the only executive to reap and keep substantial wealth from Enron.
+\label{pailou}
 \begin{verbatim}
 data_dict['PAI LOU L']
 {'bonus': 1000000,
  'deferral_payments': 'NaN',
  'deferred_income': 'NaN',
  'director_fees': 'NaN',
- 'email_address': 'lou.pai@enron.com',
+ 'email_address': 'lou.pai@Enron.com',
  'exercised_stock_options': 15364167,
  'expenses': 32047,
  'fraction_from_poi': 0,
@@ -170,7 +171,7 @@ data_dict['PAI LOU L']
  'total_payments': 3123383,
  'total_stock_value': 23817930}
 \end{verbatim}
-The features in the data fall into three major types, namely financial features, email features and POI labels.
+
 
 \begin{itemize}%
 \item financial features:\\ \texttt{salary, deferral\_payments, total\_payments, loan\_advances, bonus, restricted\_stock\_deferred, deferred\_income, total\_stock\_value, expenses, exercised\_stock\_options, other, long\_term\_incentive, restricted\_stock, director\_fees}
@@ -183,7 +184,7 @@ The features in the data fall into three major types, namely financial features,
 
 
 
-While the original enron dataset contained a robust amount of emails, this pared down one contains data for only about 150 people. Furthermore, the dataset is extremely skewed as can be seen from figure \ref{poi}.
+While the original Enron dataset contained a robust amount of emails, this pared down one contains data for only about 150 people. Furthermore, the dataset is extremely skewed as can be seen from figure \ref{poi}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -195,7 +196,7 @@ While the original enron dataset contained a robust amount of emails, this pared
 \end{figure}
 
 \subsection*{Outlier detection}
- As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first tasked we did was visualize the salary \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a datapoint that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}. 
+ As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first tasked we did was visualize the salary of Enron executives \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a datapoint that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}. 
 
  A closer look revealed that the datapoint was an input error which included the TOTAL of all salaries as its own row. The datapoint was removed leaving the dataset in a more realistic state as can be seen from figure \ref{SalaryBonus2}.
 
@@ -224,6 +225,33 @@ While the original enron dataset contained a robust amount of emails, this pared
 
 
 \section*{Exploratory Visualization}
+
+One of the areas we concentrated on was that of compensation. We were very interested in the stock options of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going been funneled out through the stocks. A more rigorous hypothesis would then collaborate stock options granted and exercise by the Enron executives with the sales of the shares on the open market. Such an investigation, is outside the scope of this project. 
+
+To zoom in on the compensation, we focused on two features `\texttt{exercised\_stock\_options}' and `\texttt{restricted\_stock}'.
+
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{ |l|l|l| } 
+    \toprule
+     NAME                &  SALARY        &  EXERCISED STOCK OPTIONS \\
+
+    \midrule
+
+    FREVERT MARK A      &  1,060,932.00  &      10433518\\ 
+    PAI LOU L           &  261,879.00    &      15364167\\ 
+    SKILLING JEFFREY K  &  1,111,258.00  &      19250000\\ 
+    RICE KENNETH D      &  420,636.00    &      19794175\\ 
+    LAY KENNETH L       &  1,072,321.00  &      34348384\\
+
+    \bottomrule
+    \end{tabular}
+    \caption{Top five Enron employees with the largest exercised stock options.}
+    \label{exStTable}
+  \end{center}
+\end{table}
+
+
 
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 \begin{itemize}% 
@@ -384,3 +412,7 @@ In this section, you will need to provide discussion as to how one aspect of the
 
 
 \end{document}
+
+
+
+
