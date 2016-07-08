@@ -226,27 +226,27 @@ While the original Enron dataset contained a robust amount of emails, this pared
 
 \section*{Exploratory Visualization}
 
-One of the areas we concentrated on was that of compensation. We were very interested in the stock options of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going been funneled out through the stocks. A more rigorous hypothesis would then collaborate stock options granted and exercise by the Enron executives with the sales of the shares on the open market. Such an investigation, is outside the scope of this project. 
+One of the areas we concentrated on was that of compensation. We were very interested in the stock options of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through the stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project. 
 
-To zoom in on the compensation, we focused on two features `\texttt{exercised\_stock\_options}' and `\texttt{restricted\_stock}'.
+To zoom in on the compensation, we focused on two features `exercised\_stock\_options' and `restricted\_stock'.
 
 \begin{table}[!htbp]
   \begin{center}
     \begin{tabular}{ |l|l|l| } 
-    \toprule
+    \hline
      NAME                &  SALARY        &  EXERCISED STOCK OPTIONS \\
 
-    \midrule
+     \hline
 
-    FREVERT MARK A      &  1,060,932.00  &      10433518\\ 
-    PAI LOU L           &  261,879.00    &      15364167\\ 
-    SKILLING JEFFREY K  &  1,111,258.00  &      19250000\\ 
-    RICE KENNETH D      &  420,636.00    &      19794175\\ 
-    LAY KENNETH L       &  1,072,321.00  &      34348384\\
+    FREVERT MARK A      &  \$1,060,932.00  &      10433518\\ 
+    PAI LOU L           &  \$261,879.00    &      15364167\\ 
+    SKILLING JEFFREY K  &  \$1,111,258.00  &      19250000\\ 
+    RICE KENNETH D      &  \$420,636.00    &      19794175\\ 
+    LAY KENNETH L       &  \$1,072,321.00  &      34348384\\
 
-    \bottomrule
+    \hline
     \end{tabular}
-    \caption{Top five Enron employees with the largest exercised stock options.}
+    \caption{Salary and exercised stock options data for the five employees with the largest exercised options.}
     \label{exStTable}
   \end{center}
 \end{table}
