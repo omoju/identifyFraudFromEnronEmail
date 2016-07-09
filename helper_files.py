@@ -21,10 +21,10 @@ def compareTwoFeatures(feature1, feature2, the_data_dict, title):
     for point in data:
         x = point[0]
         y = point[1]
-        plt.scatter( x,y )
+        plt.scatter( y, x, s=80, marker = 'o', alpha = 0.28)
 
-    plt.xlabel(feature1)
-    plt.ylabel(feature2)
+    plt.xlabel(feature2)
+    plt.ylabel(feature1)
     plt.grid(True)
     _= plt.title(title)
     plt.show() 
