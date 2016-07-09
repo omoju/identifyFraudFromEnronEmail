@@ -227,6 +227,7 @@ While the original Enron dataset contained a robust amount of emails, this pared
     \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
 \end{figure}
 
+\clearpage
 
 
 \subsection*{Outlier detection}
@@ -260,9 +261,7 @@ While the original Enron dataset contained a robust amount of emails, this pared
 
 \section*{Exploratory Visualization}
 
-One of the areas we concentrated on was that of compensation. We were very interested in the stock options of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through the stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project. 
-
-To zoom in on the compensation, we focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{exStTable} shows some financial data for some of the highest compensated employees. It comes as no surprise that We see that the sitting CEO, Ken Lay, had the second highest exercised stock option, that wasn't surprising. What was surprising was the name ``Pai Lou.'' From descriptive statistics on salary, 
+One of the areas we concentrated on was that of compensation. We were very interested in the compensation packages as represented in the financial data of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through paid bonuses and stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project. 
 
 \begin{table}[!htbp]
   \begin{center}
@@ -309,18 +308,10 @@ To zoom in on the compensation, we focused on three features `bonus,', `exercise
   \end{center}
 \end{table}
 
+To zoom in on the compensation, we focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{exStTable} shows some financial data for some of the highest compensated employees. It comes as no surprise that we see that the sitting CEO at the time of the collapsce, Ken Lay, had the second highest bonus paid, that wasn't surprising. What was surprising was the name ``John Lavorato.'' He was the employee that got the highest bonus. So who was John Lavorato? He was the former head of Enron's trading operations. 
 
+Another interesting character that showed up in the financial data was ``Pai Lou.'' From table \ref{exStTable}, one can see that he had some of the largest exercised stock options. Apart from the past CEOs and chairmen, he was \textit{the} employee that sold the most Enron stock. He also got some of the largest shares of restricted stock. Its interesting that these men aren't on the POI list in table \ref{poiTable}. I firmly believe they are probably on the co-conspirators unindicted list.
 
-
-LAVORATO JOHN J
-
-
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Have you visualized a relevant characteristic or feature about the dataset or input data?
-\item Is the visualization thoroughly analyzed and discussed?
-\item If a plot is provided, are the axes, title, and datum clearly defined?
-\end{itemize}
 
 \begin{figure}[!hbtp]
 \centering
@@ -331,7 +322,7 @@ In this section, you will need to provide some form of visualization that summar
     \includegraphics[width=0.6\textwidth]{figures/exercised_stock_options}
     \label{salaryExercisedStock2}}
     
-    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier.}}
+    \caption{\textbf{A closer look at salary and exercised stock options.} \textit{Figure (a) A scatter plot of salary versus exercised stock options. Figure (b) A plot of exercised stock options. From these two plots one can see that for most of the senior executives, .}}
 \end{figure}
 
 \begin{figure}[!hbtp]
