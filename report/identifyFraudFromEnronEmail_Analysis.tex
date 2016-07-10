@@ -352,7 +352,7 @@ We selected the robust LogisticRegression based on the fact that it handles outl
 
 \section*{Benchmark}
 
-For this specific problem, we were unable to acquire benchmarks that we could test the performance of our learners against. However in the notes accompanying the project description, we were tasked to shoot for a precision score of over 0.3. From our three learners, and the initial trials, we have already superseded this number.
+For this specific problem, we were unable to acquire benchmarks that we could test the performance of our learners against. However in the notes accompanying the project description, we were tasked to shoot for a precision score of over 0.3. From our three learners, and the initial trials, we have already superseded this number, as can be seen from table \ref{benchMarkScoresTable}.
 
 
 %----------------------------------------------------------------------------------------
@@ -389,7 +389,7 @@ salary                         633
 \hline % inserts single-line
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of training with Features Selected by RandomForest Algorithm}\\[5pt]
-\cline{2-4} 
+\hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
 & Precision & Recall & F1\\[0.5ex]
@@ -402,15 +402,15 @@ LogisticRegression          &  0.41523&  0.16900&  0.24023\\
 \hline% inserts single-line
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of training with ad-hoc Features based on domain knowledge}\\[5pt]
-\cline{2-4} 
+\hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-RandomForestClassifier      &  0.52197&  0.19600&  0.28499\\ 
-ExtraTreesClassifier        &  0.50438&  0.20150&  0.28796\\ 
-LogisticRegression          &  0.63027&  0.20200&  0.30594\\ 
+RandomForestClassifier      &  0.39824&  0.13600&  0.20276\\ 
+ExtraTreesClassifier        &  0.41558&  0.14400&  0.21389\\ 
+LogisticRegression          &  0.49852&  0.16850&  0.25187\\ 
 
 \hline % inserts single-line
 
@@ -435,55 +435,48 @@ salary
 
 
 \section*{Implementation}
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?
-\item Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?
-\item Was there any part of the coding process (e.g., writing complicated functions) that should be documented?
 
-\end{itemize}
-We implemented these three learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get a the accuracy score. These scores proved to be misleading. We went ahead a used a stratified shuffle split cross validation and calculated the precision, recall and $F_1$ scores respectively.
+We implemented these three learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. We went ahead and used a stratified shuffle split cross validation and calculated the precision, recall and $F_1$ scores respectively.
 
-From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, it was evident that the robust Logistic regression beat out both the ensemble learners on all three metrics.
+From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, it was evident that the robust Logistic regression beat out both the ensemble learners on all three metrics. Furthermore, the regression also had the least computational time of 0.026s, whereas the Random Forest and the ExtraTrees both computed in 0.236s.
 
 
-\section*{Refinement}
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. 
+\section*{Refinement \& Model Evaluation and Validation}
+To improve on the performance of the algorithm, we decided to reduce the number of features that were used for training. Through some trial and error, we realized if we held the feature list to the first three features, our performance improve dramatically as can be seen in table \ref{reducedFeaturesTable}.
+\begin{verbatim}
+bonus
+exercised_stock_options
+restricted_stock 
+\end{verbatim}
 
-What does it mean to tune the parameters of an algorithm, and what can happen if you don't do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: ``tune the algorithm'']
+\setlength{\extrarowheight}{1.5pt}
+\begin{table}[!htbp]
+\caption{Result of training with reduced features} %title of the table
+\centering % centering table
+\begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
+\hline % inserts single-line
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
 
-Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Has an initial solution been found and clearly reported?
-\item Is the process of improvement clearly documented, such as what techniques were used?
-\item Are intermediate and final solutions clearly reported as the process is improved?
-\end{itemize}
+RandomForestClassifier      &  0.49292  &0.19150 &0.27584\\ 
+ExtraTreesClassifier        &  0.50255  &0.19700 &0.28305\\ 
+LogisticRegression          &  0.63027  &0.20200 &0.30594\\ 
+\hline% inserts single-line
+\multicolumn{4}{|c|}{Results of tuning}\\[5pt]
+\hline
+
+LogisticRegression          &  0.73010  &0.18800  &0.29901\\ 
+\hline
+\end{tabular}
+\label{reducedFeaturesTable}
+\end{table}
+
+Once we achieved this result, we moved forward with tuning the hyper-parameters of the robust logistic regression. We tuned the $C$ constant as well as the $tolerance$ through scikit's grid search using a stratified shuffle split with a 1000 folds. The algorithm selected the best parameters as follows: C=0.125, tol=0.0001. We fitted this new classifier and achieved a precision score of 0.73.
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
 %----------------------------------------------------------------------------------------
-
-\chapter*{Identify Fraud From Enron Data: Results}
-
-
-\section*{Model Evaluation and Validation}
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). 
-
-
-Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?
-\item Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?
-\item Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?
-\item Can results found from the model be trusted?
-\end{itemize}
-
-\section*{Justification}
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Are the final results found stronger than the benchmark result reported earlier?
-\item Have you thoroughly analyzed and discussed the final solution?
-\item Is the final solution significant enough to have solved the problem?
-\end{itemize}
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
