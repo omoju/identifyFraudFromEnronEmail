@@ -367,14 +367,70 @@ We suspected that there was interdependence of features so we engineered a featu
 
 Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. We decided to use a RandomForest classifier to implement feature selection.
 
-For our implementation, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' to obtain a score on the strength of that feature. We ran this algorithm a 1000 and averaged the scores of the features to obtain the top $n$ features.
+For our implementation, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' to obtain a score on the strength of that feature. We ran this algorithm a 1000 and averaged the scores of the features to obtain the top $n$ features. The output of the experiment is as follows:
+\begin{verbatim}
+exercised_stock_options        944
+total_stock_value              903
+bonus                          886
+expenses                       877
+other                          875
+total_payments                 709
+restricted_stock               684
+deferred_income                675
+shared_receipt_with_poi        674
+salary                         633
+\end{verbatim}
+
+\setlength{\extrarowheight}{1.5pt}
+\begin{table}[!htbp]
+\caption{Scores} %title of the table
+\centering % centering table
+\begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
+\hline % inserts single-line
+\multicolumn{4}{|c|}{}\\
+\multicolumn{4}{|c|}{Result of training with Features Selected by RandomForest Algorithm}\\[5pt]
+\cline{2-4} 
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
+
+RandomForestClassifier      &  0.36602&  0.13250&  0.19457\\ 
+ExtraTreesClassifier        &  0.37158&  0.14250&  0.20600\\ 
+LogisticRegression          &  0.41523&  0.16900&  0.24023\\ 
+
+\hline% inserts single-line
+\multicolumn{4}{|c|}{}\\
+\multicolumn{4}{|c|}{Result of training with ad-hoc Features based on domain knowledge}\\[5pt]
+\cline{2-4} 
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
+
+RandomForestClassifier      &  0.52197&  0.19600&  0.28499\\ 
+ExtraTreesClassifier        &  0.50438&  0.20150&  0.28796\\ 
+LogisticRegression          &  0.63027&  0.20200&  0.30594\\ 
+
+\hline % inserts single-line
+
+\end{tabular}
+\label{benchMarkScoresTable}
+\end{table}
+
+We we used this features on our three baseline learners, the results we got didn't necessarily improve over our ad-hoc, knowledge of domain intuition guided features, as can be seen from table \ref{benchMarkScoresTable}.
 
 For the final algorithm, we ended up going with our intuition and selecting features that we had explored in the data analysis. These features are as follows: 
 \begin{verbatim}
-['poi', 'bonus', 'exercised_stock_options', 'restricted_stock'
- 'fraction_from_poi','fraction_to_poi',
- 'from_poi_to_this_person','from_this_person_to_poi',
-  'salary']
+poi
+bonus
+exercised_stock_options
+restricted_stock
+fraction_from_poi
+fraction_to_poi
+from_poi_to_this_person
+from_this_person_to_poi
+salary
 \end{verbatim}
 
 
@@ -389,26 +445,6 @@ In this section, the process for which metrics, algorithms, and techniques that 
 We implemented these three learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get a the accuracy score. These scores proved to be misleading. We went ahead a used a stratified shuffle split cross validation and calculated the precision, recall and $F_1$ scores respectively.
 
 From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, it was evident that the robust Logistic regression beat out both the ensemble learners on all three metrics.
-
-\setlength{\extrarowheight}{1.5pt}
-\begin{table}[!htbp]
-\caption{Result of training with baseline \textbf{Learners}} %title of the table
-\centering % centering table
-\begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
-\hline % inserts single-line
-& \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
-& Precision & Recall & F1\\[0.5ex]
-\hline % inserts single-line
-
-RandomForestClassifier      &  0.52197&  0.19600&  0.28499\\ 
-ExtraTreesClassifier        &  0.50438&  0.20150&  0.28796\\ 
-LogisticRegression          &  0.63027&  0.20200&  0.30594\\ 
-
-\hline % inserts single-line
-\end{tabular}
-\label{benchMarkScoresTable}
-\end{table}
 
 
 \section*{Refinement}
