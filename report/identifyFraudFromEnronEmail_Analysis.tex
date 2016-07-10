@@ -128,16 +128,20 @@ To identify persons of interest that might have been party to fraud at Enron we 
 
 \section*{Metrics}
 
-The Enron dataset while it contains a robust amount of emails, contains data for only about 150 people. As such, 
+The Enron dataset while it contains a robust amount of emails, contains data for only about 150 people. An interesting aspect of the Enron data is that the class labels for our classification is heavily unbalanced at a ratio of around 6:1 in favor of negative examples as can be seen in figure \ref{poi}. 
 
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Are the metrics you've chosen to measure the performance of your models clearly discussed and defined?
-\item Have you provided reasonable justification for the metrics chosen based on the problem and solution?
-\end{itemize}
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=0.6\textwidth]{figures/poi}
+    \label{poi}}
+    
+    \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
+\end{figure}
 
-accuracy, precision, recall, f1, f2
-true positives, false positives, false negatives, true negatives)
+
+For this reason, using ``Accuracy'' as a performance metric leads to misleading information. A more apt measure of the performance of a learner should take into account the results of a confusion matrix and  calculate ``precision'' and ``recall,'' noting that precision is more a measure of a classifiers exactness.
+
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
@@ -217,15 +221,6 @@ data_dict['PAI LOU L']
   \end{center}
 \end{table}
 While the original Enron dataset contained a robust amount of emails, this pared down one contains data for only about 150 people. Furthermore, the dataset is extremely skewed as can be seen from figure \ref{poi}.
-
-\begin{figure}[!hbtp]
-\centering
-    \subfloat[]{%
-    \includegraphics[width=0.6\textwidth]{figures/poi}
-    \label{poi}}
-    
-    \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
-\end{figure}
 
 \clearpage
 
@@ -342,16 +337,41 @@ We proceeded on, with a hypothesis that more than likely, the executives with th
 \clearpage
 \section*{Algorithms and Techniques}
 
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. 
+For the problem of identifying fraud from the Enron financial and email data, we experimented with three different classifiers:
+\begin{enumerate}% 
+\item A RandomForestClassifier\\
+We selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning. 
+\item An ExtraTreesClassifier\\
+ Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
+\item A LogisticRegression (Robust, with $Lp$ = $L1$) \\
+Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
+We selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleaned of ``outliers,'' there are a few executives whose datapoints fall outside of the mean by several standard deviations.
+\end{enumerate}
 
-What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: ``pick an algorithm'']
+We implemented these three learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get a the accuracy score. These scores proved to be misleading. We went ahead a used a stratified shuffle split cross validation and calculated the precision, recall and $F_1$ scores respectively.
 
-Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
-\item Are the techniques to be used thoroughly discussed and justified?
-\item Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?
-\end{itemize}
+From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, it was evident that the robust Logistic regression beat out both the ensemble learners on all three metrics.
+
+\setlength{\extrarowheight}{1.5pt}
+\begin{table}[!htbp]
+\caption{Result of training with baseline \textbf{Learners}} %title of the table
+\centering % centering table
+\begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
+\hline % inserts single-line
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
+
+RandomForestClassifier      &  0.52197&  0.19600&  0.28499\\ 
+ExtraTreesClassifier        &  0.50438&  0.20150&  0.28796\\ 
+LogisticRegression          &  0.63027&  0.20200&  0.30594\\ 
+
+\hline % inserts single-line
+\end{tabular}
+\label{benchMarkScoresTable}
+\end{table}
+
 
 \section*{Benchmark}
 
