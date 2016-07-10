@@ -21,6 +21,7 @@ import sys
 from time import time
 import matplotlib as pl
 import matplotlib.pyplot as plt
+import numpy as np
 import pickle
 
 
@@ -55,8 +56,67 @@ from helper_files import compareTwoFeatures, computeFraction, findPersonBasedOnT
 ### The data that I am loading in here is the one that has be cleansed of outliers. 
 ### For more information on that, refer to the notebook titled "cleanDataForOutliers" in the same folder.
 
-with open('cleaned_dataset.pkl', "r") as data_file:
+with open(dataPath+'final_project/final_project_dataset.pkl', "r") as data_file:
     data_dict = pickle.load(data_file)
+    
+    
+
+
+# ## Outlier removal
+# If there are outliers, remove outliers
+# 
+# This is an iteratable process. I need to do this for each combination of features I want to use
+# 
+
+# In[5]:
+
+data = compareTwoFeatures('salary', 'bonus', data_dict, "SALARY versus BONUS")
+print "Clean data for outliers"
+
+
+# In[6]:
+
+np.where(data > 0.8 * 1e8) # This is where the outlier is, what I have to do now is find out who it is
+
+
+# In[7]:
+
+data[57] # So whose bonus is 97343619?
+# What’s the name of the dictionary key of this data point?
+
+
+# In[8]:
+
+for key, value in data_dict.iteritems():
+    if (value['bonus'] >= int(data[57][1]) and 
+        value['bonus'] != "NaN" and
+        value['salary'] != "NaN"):
+        print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(key, 'salary is ', value['salary'],
+                                                   ' bonus ', value['bonus'])
+        
+    if (value['restricted_stock'] < 0):
+        print "{:20}{:12}{:12}".format(key, 'restricted_stock is ', value['restricted_stock'])
+
+
+
+
+# In[9]:
+
+# Remove the source of the outlier
+
+data_dict.pop( 'TOTAL')
+data_dict.pop( 'BHATNAGAR SANJAY')
+
+print "Deleted following records with keys:"
+print 'TOTAL'
+print 'BHATNAGAR SANJAY'
+
+# We can now go back and rerun the regression to see what the data really looks like.
+
+
+# In[10]:
+
+data = compareTwoFeatures('salary', 'bonus', data_dict, "SALARY versus BONUS cleansed of outliers")
 
 
 # ## Task: Data exploration
@@ -64,7 +124,7 @@ with open('cleaned_dataset.pkl', "r") as data_file:
 # 
 # 
 
-# In[6]:
+# In[11]:
 
 ## Creating a pandas dataframe so that we can easily get descriptive statistics about our features
 
@@ -84,7 +144,7 @@ restrictedStock = list(itertools.chain.from_iterable(restrictedStock))
 
 
 
-# In[74]:
+# In[12]:
 
 ## Pad feature list with zeros to ensure all columns have equal lenght
 ## Otherwise we won't be able to transfor the individual feature list into a dataframe
@@ -106,7 +166,7 @@ temp = [0.0] * size
 exerStockOptions = exerStockOptions + temp
 
 
-# In[76]:
+# In[13]:
 
 import pandas as pd
 
@@ -123,10 +183,10 @@ _= plt.title('Salary')
 _= plt.legend(loc='upper center', shadow=True, fontsize='medium')
 plt.show()
 
-print "Statistics on Salary\n", df['salary'].describe()
+df['salary'].describe()
 
 
-# In[77]:
+# In[14]:
 
 ax2 = df['exercisedStockOptions'].plot()
 ax2.yaxis.tick_right()
@@ -138,10 +198,10 @@ _= plt.legend(loc='upper center', shadow=True, fontsize='medium')
 
 plt.show()
 
-print "Statistics on Exercise stocks options\n", df['exercisedStockOptions'].describe()
+df['exercisedStockOptions'].describe()
 
 
-# In[78]:
+# In[15]:
 
 ax2 = df['restrictedStock'].plot()
 ax2.yaxis.tick_right()
@@ -153,10 +213,10 @@ _= plt.legend(loc='upper center', shadow=True, fontsize='medium')
 
 plt.show()
 
-print "Statistics on Restricted Stocks\n", df['restrictedStock'].describe()
+df['restrictedStock'].describe()
 
 
-# In[79]:
+# In[16]:
 
 ax2 = df['bonus'].plot()
 ax2.yaxis.tick_right()
@@ -168,10 +228,10 @@ _= plt.legend(loc='upper center', shadow=True, fontsize='medium')
 
 plt.show()
 
-print "Statistics on Bonus\n", df['bonus'].describe()
+df['bonus'].describe()
 
 
-# In[12]:
+# In[17]:
 
 def printLatex(feature1, feature2, the_data_dict, treshold):
     def getKey(item):
@@ -192,44 +252,44 @@ def printLatex(feature1, feature2, the_data_dict, treshold):
     
 
 
-# In[13]:
+# In[18]:
 
 f1, f2 = 'salary','exercised_stock_options'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus EXERCISED STOCK OPTIONS")
 
 
-# In[80]:
+# In[19]:
 
 treshold = 8000000
 #printLatex(f1, f2, data_dict, treshold)
 
 
-# In[15]:
+# In[20]:
 
 f1, f2 = 'salary','restricted_stock'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus RESTRICTED STOCK")
 
 
 
-# In[81]:
+# In[21]:
 
 treshold = 3000000
 #printLatex(f1, f2, data_dict, treshold)
 
 
-# In[83]:
+# In[22]:
 
 f1, f2 = 'salary','bonus'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus BONUS")
 
 
-# In[84]:
+# In[23]:
 
 treshold = 4000000
 #printLatex(f1, f2, data_dict, treshold)
 
 
-# In[19]:
+# In[24]:
 
 data_dict['LAVORATO JOHN J']
 
@@ -242,7 +302,7 @@ data_dict['LAVORATO JOHN J']
 # - The first feature must be "poi".
 # - Store to `my_dataset` for easy export below.
 
-# In[20]:
+# In[25]:
 
 submit_dict = {}
 for name in data_dict:
@@ -268,7 +328,7 @@ for name in data_dict:
     
 
 
-# In[87]:
+# In[26]:
 
 f1, f2 = 'bonus','exercised_stock_options'
 data = compareTwoFeatures(f1, f2, data_dict, 'Bonus v Exercised Stock Options')
@@ -276,7 +336,7 @@ data = compareTwoFeatures(f1, f2, data_dict, 'Bonus v Exercised Stock Options')
 
 # Extract features and labels from dataset
 
-# In[88]:
+# In[27]:
 
 feature_list = ['poi', 'bonus', 'exercised_stock_options', 'restricted_stock']
 # 'fraction_from_poi','fraction_to_poi',
@@ -285,19 +345,13 @@ feature_list = ['poi', 'bonus', 'exercised_stock_options', 'restricted_stock']
 my_dataset = data_dict
 
 data = featureFormat(my_dataset, feature_list, sort_keys = True)
+labels, features = targetFeatureSplit(data)
+
+print "The features we are using to train our model are as follows:"
+print feature_list
 
 
-# ## Scale features
-
-# In[91]:
-
-from sklearn.preprocessing import MinMaxScaler 
-
-minmax_scale = MinMaxScaler(feature_range=(0, 1), copy=True)
-labels, features = targetFeatureSplit( minmax_scale.fit_transform(data))
-
-
-# In[92]:
+# In[28]:
 
 import pandas as pd
 
@@ -309,6 +363,7 @@ _= plt.xlabel('datapoint value')
 _= plt.title('Histogram of Person of Interest')
 _= plt.legend(loc='upper center', shadow=True, fontsize='medium')
 _= plt.axis([0, 1, 0, 200])
+plt.show()
 
 
 # # Pick and Tune an Algorithm
@@ -321,12 +376,12 @@ _= plt.axis([0, 1, 0, 200])
 # - Achieve better than .3 precision and recall. Using our testing script. Check the `tester.py` script in the final project folder for details on the evaluation method, especially the test_classifier function. Because of the small size of the dataset, the script uses `stratified shuffle split cross validation`. For more info: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 # 
 
-# In[93]:
+# In[29]:
 
 feature_list
 
 
-# In[25]:
+# In[30]:
 
 from sklearn.cross_validation import cross_val_score 
 from sklearn.ensemble import RandomForestClassifier
@@ -342,13 +397,13 @@ scores = cross_val_score(clf, features, labels)
 print("done in %0.3fs" % (time() - t0))
 print "Scores for the prediction: ", scores, "\n"        
     
-print"Running learner against tester script\n"    
-t0 = time()    
-test_classifier(clf, my_dataset, feature_list, folds = 1000)
-print("done in %0.3fs" % (time() - t0))
+#print"Running learner against tester script\n"    
+#t0 = time()    
+#test_classifier(clf, my_dataset, feature_list, folds = 1000)
+#print("done in %0.3fs" % (time() - t0))
 
 
-# In[26]:
+# In[31]:
 
 from sklearn.ensemble import ExtraTreesClassifier
 
@@ -363,39 +418,39 @@ scores = cross_val_score(clf, features, labels)
 print("done in %0.3fs" % (time() - t0))
 print "Scores for the prediction: ", scores, "\n"        
     
-print"Running learner against tester script\n" 
+#print"Running learner against tester script\n" 
 
-t0 = time()    
-test_classifier(clf, my_dataset, feature_list, folds = 1000)
-print("done in %0.3fs" % (time() - t0))
+#t0 = time()    
+#test_classifier(clf, my_dataset, feature_list, folds = 1000)
+#print("done in %0.3fs" % (time() - t0))
 
 
-# In[94]:
+# In[32]:
 
 from sklearn.linear_model import LogisticRegression
 
 print '_'*20, 'LogisticRegression', '_'*20
 print "Training the data"
 
-clf = LogisticRegression(C=0.125, penalty='l1', solver='liblinear')
+clf = LogisticRegression(penalty='l1', solver='liblinear')
 
 t0 = time()
 scores = cross_val_score(clf, features, labels)
 print("done in %0.3fs" % (time() - t0))
 print "Scores for the prediction: ", scores, "\n"        
     
-print"Running learner against tester script\n"        
+#print"Running learner against tester script\n"        
     
     
-t0 = time()    
-test_classifier(clf, my_dataset, feature_list, folds = 1000)
-print("done in %0.3fs" % (time() - t0))
+#t0 = time()    
+#test_classifier(clf, my_dataset, feature_list, folds = 1000)
+#print("done in %0.3fs" % (time() - t0))
 
 
 # In[33]:
 
 
-import numpy as np
+
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedShuffleSplit
 
@@ -412,20 +467,50 @@ ssscv = StratifiedShuffleSplit(labels, folds, random_state = 42)
 # Using a basis of 2, a finer tuning can be achieved but at a much higher cost.
 
 C_range = 2. ** np.arange(-3, 2)
-tolerance = [1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7]
+tolerance = [1e-2, 1e-3, 1e-4]
 
 param_grid = dict(tol=tolerance, C=C_range)  
 
 grid = GridSearchCV(clf, param_grid=param_grid, cv=ssscv)
 grid.fit(features, labels)
 
-print("The best classifier is: ", grid.best_estimator_)
 
+
+# In[36]:
+
+clf =  grid.best_estimator_
+print "final learner"
+print clf
+
+
+#print"Running the tuned learner against the tester script\n"        
+        
+#t0 = time()    
+#test_classifier(clf, my_dataset, feature_list, folds = 1000)
+#print("done in %0.3fs" % (time() - t0))
+
+
+# Running the tuned learner against the tester script
+# 
+# LogisticRegression(C=0.125, class_weight=None, dual=False, fit_intercept=True,
+#           intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+#           penalty='l1', random_state=None, solver='liblinear', tol=0.01,
+#           verbose=0, warm_start=False)
+#           
+# 	Accuracy: 0.86431	Precision: 0.72957	Recall: 0.18750	F1: 0.29833	F2: 0.22023
+# 	Total predictions: 13000	True positives:  375	False positives:  139	False negatives: 1625	True negatives: 10861
+# 
+# done in 0.694s
 
 # ## Task 6: Export solution
 # Dump your classifier, dataset, and features_list so anyone can check your results. You do not need to change anything below, but make sure that the version of `poi_id.py` that you submit can be run on its own and generates the necessary .pkl files for validating your results.
 
-# In[73]:
+# In[37]:
 
 dump_classifier_and_data(clf, my_dataset, feature_list)
+
+
+# In[ ]:
+
+
 
