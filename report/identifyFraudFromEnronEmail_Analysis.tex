@@ -392,18 +392,36 @@ salary                         633
 \begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
 \hline % inserts single-line
 \multicolumn{4}{|c|}{}\\
-\multicolumn{4}{|c|}{Result of training with Features Selected by RandomForest Algorithm}\\[5pt]
+\multicolumn{4}{|c|}{Result of Training with Features Selected by \textbf{RandomForest}}\\[5pt]
 \hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-RandomForestClassifier      &  0.36602&  0.13250&  0.19457\\ 
-ExtraTreesClassifier        &  0.37158&  0.14250&  0.20600\\ 
-LogisticRegression          &  0.41523&  0.16900&  0.24023\\ 
+ExtraTreesClassifier     &  0.387       &  0.144     &  0.210     \\ 
+LogisticRegression       &  0.416       &  0.170     &  0.241     \\ 
+RandomForestClassifier   &  0.370       &  0.140     &  0.203     \\ 
+XGBClassifier            &  0.441       &  0.200     &  0.275     \\ 
+
 
 \hline% inserts single-line
+
+\multicolumn{4}{|c|}{}\\
+\multicolumn{4}{|c|}{Result of training with \textbf{XGBoost} Generated Features}\\[5pt]
+\hline 
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
+
+ExtraTreesClassifier     & 0.454       & 0.174     & 0.252\\     
+LogisticRegression       & 0.293       & 0.200     & 0.237\\     
+RandomForestClassifier   & 0.379       & 0.131     & 0.194\\     
+XGBClassifier            & 0.416       & 0.196     & 0.266\\
+
+\hline% inserts single-line
+
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of training with ad-hoc Features based on domain knowledge}\\[5pt]
 \hline 
@@ -423,6 +441,18 @@ LogisticRegression          &  0.49852&  0.16850&  0.25187\\
 \end{table}
 
 We we used this features on our three baseline learners, the results we got didn't necessarily improve over our ad-hoc, knowledge of domain intuition guided features, as can be seen from table \ref{benchMarkScoresTable}.
+
+We decided to try another classifier to determine feature importance. Noting that our dataset was relatively small and was deeply unbalanced, we knew the results we would get from training on the data as is would be misleading. As a result, we re-sampled the dataset and grew it a 1000x using sklearn's \texttt{StratifiedShuffleSplit} function with a thousand folds. We then fed this more expansive dataset to an \texttt{XGBoost} classifier and applied its \texttt{plot\_importance} function to discover the important features as can be seen from figure \ref{xgboostFeatureImportance}.
+
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=1\textwidth]{figures/xgboostFeatureImportance}
+    \label{xgboostFeatureImportance}}
+    
+    \caption{\textbf{Important training features as discovered by XGboost.} \textit{}}
+\end{figure}
+
 
 For the final algorithm, we ended up going with our intuition and selecting features that we had explored in the data analysis. These features are as follows: 
 \begin{verbatim}
@@ -464,9 +494,10 @@ restricted_stock
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-RandomForestClassifier      &  0.49292  &0.19150 &0.27584\\ 
-ExtraTreesClassifier        &  0.50255  &0.19700 &0.28305\\ 
-LogisticRegression          &  0.63027  &0.20200 &0.30594\\ 
+ExtraTreesClassifier     &  0.490       &  0.181     &  0.264     \\ 
+LogisticRegression       &  0.630       &  0.202     &  0.306     \\ 
+RandomForestClassifier   &  0.483       &  0.190     &  0.272     \\ 
+XGBClassifier            &  0.505       &  0.332     &  0.400     \\ 
 \hline% inserts single-line
 \multicolumn{4}{|c|}{Results of tuning}\\[5pt]
 \hline
