@@ -367,23 +367,34 @@ For this specific problem, we were unable to acquire benchmarks that we could te
 \section*{Data Preprocessing}
 Significant data preprocessing wasn't necessary for this problem. Once we ridded our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. We tested out our three learners with salary and bonus features before we scaled them with a minimax-scaler and afterwards. We found no difference, so we decided to forgo scaling.
 
+\section*{Feature Engineering}
 We suspected that there was interdependence of features so we engineered a feature, the ``fraction of emails to and from poi.'' We figured this metric could give us another window into discriminating the data. 
 
-Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. We decided to use a RandomForest classifier to implement feature selection.
+\section*{Feature Selection}
+Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. In the case of the latter we selected a RandomForest classifier as well as a Gradient Boosted Trees---XGBoost---classifier to implement feature selection.
 
-For our implementation, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' to obtain a score on the strength of that feature. We ran this algorithm a 1000 and averaged the scores of the features to obtain the top $n$ features. The output of the experiment is as follows:
-\begin{verbatim}
-exercised_stock_options        944
-total_stock_value              903
-bonus                          886
-expenses                       877
-other                          875
-total_payments                 709
-restricted_stock               684
-deferred_income                675
-shared_receipt_with_poi        674
-salary                         633
-\end{verbatim}
+For the RandomForest algorithm, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' to obtain a score on the strength of that feature. To obtain reliable scores, we ran the algorithm a 1000x and averaged the scores of the features to obtain the top $n$ features as visualized in figure \ref{randomForestFeatureImportance}.
+
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=1\textwidth]{figures/randomForestFeatureImportance}
+    \label{randomForestFeatureImportance}}
+    
+    \caption{\textbf{Feature importance as discovered by RandomForest.} \textit{}}
+\end{figure}
+
+For the XGBoost classifier, we took a different approach to obtaining reliable data. We re-sampled the dataset and grew it a 1000x using sklearn's \texttt{StratifiedShuffleSplit} function with a thousand folds. We then fed this more expansive dataset to an \texttt{XGBoost} classifier and applied its \texttt{plot\_importance} function to discover the important features as can be seen from figure \ref{xgboostFeatureImportance}.
+
+\begin{figure}[!hbtp]
+\centering
+    \subfloat[]{%
+    \includegraphics[width=1\textwidth]{figures/xgboostFeatureImportance}
+    \label{xgboostFeatureImportance}}
+    
+    \caption{\textbf{Feature importance as discovered by XGboost.} \textit{}}
+\end{figure}
+
 
 \setlength{\extrarowheight}{1.5pt}
 \begin{table}[!htbp]
@@ -392,7 +403,7 @@ salary                         633
 \begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
 \hline % inserts single-line
 \multicolumn{4}{|c|}{}\\
-\multicolumn{4}{|c|}{Result of Training with Features Selected by \textbf{RandomForest}}\\[5pt]
+\multicolumn{4}{|c|}{Result of Training with \textbf{RandomForest} generated features}\\[5pt]
 \hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
@@ -408,7 +419,7 @@ XGBClassifier            &  0.441       &  0.200     &  0.275     \\
 \hline% inserts single-line
 
 \multicolumn{4}{|c|}{}\\
-\multicolumn{4}{|c|}{Result of training with \textbf{XGBoost} Generated Features}\\[5pt]
+\multicolumn{4}{|c|}{Result of training with \textbf{XGBoost} generated features}\\[5pt]
 \hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
@@ -423,16 +434,17 @@ XGBClassifier            & 0.416       & 0.196     & 0.266\\
 \hline% inserts single-line
 
 \multicolumn{4}{|c|}{}\\
-\multicolumn{4}{|c|}{Result of training with ad-hoc Features based on domain knowledge}\\[5pt]
+\multicolumn{4}{|c|}{Result of training with \textbf{Ad-hoc} features}\\[5pt]
 \hline 
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
 \cline{2-4} 
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-RandomForestClassifier      &  0.39824&  0.13600&  0.20276\\ 
-ExtraTreesClassifier        &  0.41558&  0.14400&  0.21389\\ 
-LogisticRegression          &  0.49852&  0.16850&  0.25187\\ 
+ExtraTreesClassifier     &  0.449       &  0.140     &  0.213     \\ 
+LogisticRegression       &  0.499       &  0.169     &  0.252     \\ 
+RandomForestClassifier   &  0.404       &  0.146     &  0.215     \\ 
+XGBClassifier            &  0.422       &  0.299     &  0.350     \\ 
 
 \hline % inserts single-line
 
@@ -440,19 +452,7 @@ LogisticRegression          &  0.49852&  0.16850&  0.25187\\
 \label{benchMarkScoresTable}
 \end{table}
 
-We we used this features on our three baseline learners, the results we got didn't necessarily improve over our ad-hoc, knowledge of domain intuition guided features, as can be seen from table \ref{benchMarkScoresTable}.
-
-We decided to try another classifier to determine feature importance. Noting that our dataset was relatively small and was deeply unbalanced, we knew the results we would get from training on the data as is would be misleading. As a result, we re-sampled the dataset and grew it a 1000x using sklearn's \texttt{StratifiedShuffleSplit} function with a thousand folds. We then fed this more expansive dataset to an \texttt{XGBoost} classifier and applied its \texttt{plot\_importance} function to discover the important features as can be seen from figure \ref{xgboostFeatureImportance}.
-
-\begin{figure}[!hbtp]
-\centering
-    \subfloat[]{%
-    \includegraphics[width=1\textwidth]{figures/xgboostFeatureImportance}
-    \label{xgboostFeatureImportance}}
-    
-    \caption{\textbf{Important training features as discovered by XGboost.} \textit{}}
-\end{figure}
-
+We used these features selected by the algorithms along side our domain guided features on our four baseline learners, the results can be see in table \ref{benchMarkScoresTable}. From this experiment, we decided to go with our ad-hoc generated features because the performance was superior when we considered the precision score of all four learners. It is important to note that the other features were not woeful in their performance, and overall, these features with baseline classifiers had already put us over the threshold of the benchmark precision score---0.3---we were to surpass.
 
 For the final algorithm, we ended up going with our intuition and selecting features that we had explored in the data analysis. These features are as follows: 
 \begin{verbatim}
@@ -470,9 +470,9 @@ salary
 
 \section*{Implementation}
 
-We implemented these three learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. We went ahead and used a stratified shuffle split cross validation and calculated the precision, recall and $F_1$ scores respectively.
+We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. We went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
 
-From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, it was evident that the robust Logistic regression beat out both the ensemble learners on all three metrics. Furthermore, the regression also had the least computational time of 0.026s, whereas the Random Forest and the ExtraTrees both computed in 0.236s.
+From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, we decided to go with the \textit{Logistic Regression} because it gave us the highest precision score when training on our ad-hoc features. Furthermore, the regression also had the least computational time of 0.938s, whereas the Random Forest and the ExtraTrees both computed in 18.280s, and the XGBoost computed in around 10.925s.
 
 
 \section*{Refinement \& Model Evaluation and Validation}
