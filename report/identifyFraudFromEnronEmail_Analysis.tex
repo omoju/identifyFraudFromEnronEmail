@@ -345,7 +345,11 @@ We selected this learner because it is considered one of the best off-the-shelf 
  Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
 \item A LogisticRegression (Robust, with $Lp$ = $L1$) \\
 Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
+
 We selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleaned of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
+\item An Gradient Boosted Trees (XGBoost)\\
+From reading a lot of post on Kaggle and perusing the past winners of KDD competitions all touting the robustness of this classifier, we wanted to see how it would perform against an unbalanced dataset like the one we have for this problem.
+
 \end{enumerate}
 
 
