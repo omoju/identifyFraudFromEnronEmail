@@ -225,7 +225,7 @@ While the original Enron dataset contained a robust amount of emails, this pared
 \clearpage
 
 
-\subsection*{Outlier detection}
+\section*{Outlier detection}
  As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first tasked we did was visualize the salary of Enron executives \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a data-point that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}. 
 
  A closer look revealed that the data-point was an input error which included the TOTAL of all salaries as its own row. The data-point was removed leaving the dataset in a more realistic state as can be seen from figure \ref{SalaryBonus2}.
@@ -337,18 +337,19 @@ We proceeded on, with a hypothesis that more than likely, the executives with th
 \clearpage
 \section*{Algorithms and Techniques}
 
-For the problem of identifying fraud from the Enron financial and email data, we experimented with three different classifiers:
+For the problem of identifying fraud from the Enron financial and email data, we experimented with four different classifiers, three ensemble methods and on regression:
 \begin{enumerate}% 
 \item A RandomForestClassifier\\
 We selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning. 
 \item An ExtraTreesClassifier\\
  Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
-\item A LogisticRegression (Robust, with $Lp$ = $L1$) \\
+\item A Gradient Boosted Trees (XGBoost) Classifier\\
+From reading a lot of posts on Kaggle and perusing the past winners of KDD competitions all touting the robustness of this classifier, we wanted to see how it would perform against an unbalanced dataset like the one we have for this problem.
+
+\item A LogisticRegression (Robust, with $Lp$ = $L1$) Classifier\\
 Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
 
-We selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleaned of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
-\item An Gradient Boosted Trees (XGBoost)\\
-From reading a lot of post on Kaggle and perusing the past winners of KDD competitions all touting the robustness of this classifier, we wanted to see how it would perform against an unbalanced dataset like the one we have for this problem.
+We selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleansed of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
 
 \end{enumerate}
 
@@ -356,7 +357,7 @@ From reading a lot of post on Kaggle and perusing the past winners of KDD compet
 
 \section*{Benchmark}
 
-For this specific problem, we were unable to acquire benchmarks that we could test the performance of our learners against. However in the notes accompanying the project description, we were tasked to shoot for a precision score of over 0.3. From our three learners, and the initial trials, we have already superseded this number, as can be seen from table \ref{benchMarkScoresTable}.
+For this specific problem, we were unable to acquire benchmarks that we could test the performance of our learners against. However in the notes accompanying the project description, we were tasked to shoot for a precision score of over 0.3. From our four learners, and the initial trials, we have already superseded this number, as can be seen from table \ref{benchMarkScoresTable}.
 
 
 %----------------------------------------------------------------------------------------
@@ -365,7 +366,7 @@ For this specific problem, we were unable to acquire benchmarks that we could te
 \chapter*{Identify Fraud From Enron Data: Methodology}
 
 \section*{Data Preprocessing}
-Significant data preprocessing wasn't necessary for this problem. Once we ridded our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. We tested out our three learners with salary and bonus features before we scaled them with a minimax-scaler and afterwards. We found no difference, so we decided to forgo scaling.
+Significant data preprocessing wasn't necessary for this problem. Once we ridded our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. We tested out our four learners with \texttt{salary} and \texttt{bonus} features before we scaled them with a minimax-scaler afterwards. We found no difference, so we decided to forgo scaling.
 
 \section*{Feature Engineering}
 We suspected that there was interdependence of features so we engineered a feature, the ``fraction of emails to and from poi.'' We figured this metric could give us another window into discriminating the data. 
@@ -508,10 +509,7 @@ LogisticRegression          &  0.73010  &0.18800  &0.29901\\
 \label{reducedFeaturesTable}
 \end{table}
 
-Once we achieved this result, we moved forward with tuning the hyper-parameters of the robust logistic regression. We tuned the $C$ constant as well as the $tolerance$ through scikit's grid search using a stratified shuffle split with a 1000 folds. The algorithm selected the best parameters as follows: C=0.125, tol=0.0001. We fitted this new classifier and achieved a precision score of 0.73.
-%----------------------------------------------------------------------------------------
-%  CHAPTER 
-%----------------------------------------------------------------------------------------
+Once we achieved this result, we moved forward with tuning the hyper-parameters of the robust logistic regression. We tuned the $C$ constant as well as the $tolerance$ through scklearn's \texttt(GridSearchCV) using a stratified shuffle split with a 1000 folds. The algorithm selected the best parameters as follows: C=0.125, tol=0.0001. We fitted this new classifier and achieved a precision score of 0.73.
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
