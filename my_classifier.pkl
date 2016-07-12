@@ -106,7 +106,7 @@ I-1
 I0
 tp44
 bI00
-S'\x0e\x00\x00\x00'
+S'\t\x00\x00\x00'
 p45
 tp46
 bsS'penalty'
@@ -121,7 +121,7 @@ sS'random_state'
 p51
 NsS'tol'
 p52
-F0.0001
+F0.01
 sS'n_jobs'
 p53
 I1
@@ -140,7 +140,7 @@ I3
 tp58
 g12
 I01
-S'\x82\x95\xf6\xc2\xb0\xe4\x8e>T\xb0\xf2\xfbn\x9bz>\x8a]\x94\xd0\xd4:w\xbe'
+S'w\x91\xad-[\xe9\x8e>\x1f\x90\xa3)\xe2\x8fz>9.\x01\x86c#w\xbe'
 p59
 tp60
 bsS'intercept_'
@@ -157,7 +157,7 @@ Rp64
 tp65
 g12
 I00
-S'Z\xbcYr\xca\x13\xfc\xbf'
+S'Y\x11\xbb\x89/\x15\xfc\xbf'
 p66
 tp67
 bsS'class_weight'
