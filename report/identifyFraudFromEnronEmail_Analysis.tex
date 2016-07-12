@@ -517,31 +517,26 @@ Once we achieved this result, we moved forward with tuning the hyper-parameters 
 
 \chapter*{Identify Fraud From Enron Data: Conclusion}
 
-\section*{Free-Form Visualization}
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Have you visualized a relevant or important quality about the problem, dataset, input data, or results?
-\item Is the visualization thoroughly analyzed and discussed?
-\item If a plot is provided, are the axes, title, and datum clearly defined?
-\end{itemize}
-
 
 \section*{Reflection}
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Have you thoroughly summarized the entire process you used for this project?
-\item Were there any interesting aspects of the project?
-\item Were there any difficult aspects of the project?
-\item Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?
-\end{itemize}
+
+We have presented a solution to identifying ``persons of interest'' who \textit{might}have played a significant role in perpetuating fraud at Enron from their finance and email data. We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
+
+The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm to use. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, ``precision'' was the more apt choice.
+
+From our analysis we discovered some outliers and removed them from the dataset. We took a close look at ``exercised stock options'' and ``restricted stocks'' to see how the senior executives were compensated. Based on our working hypothesis that if fraud was indeed been fomented at Enron, then more than likely the vehicle that the senior officers would take to get the money out would be through an inflated allocation of shares. 
+
+We selected three ensemble learners (Random Forest, Extra Trees, Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. We selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since we didn't have existing benchmarks we could use to reason about the effectiveness of our approach, we resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
+
+We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the logistic regression classifier as the algorithm to use for this problem. We tuned that algorithm and obtained a precision score of 0.7.
 
 \section*{Improvement}
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-\begin{itemize}% 
-\item Are there further improvements that could be made on the algorithms or techniques you used in this project?
-\item Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?
-\item If you used your final solution as the new benchmark, do you think an even better solution exists?
-\end{itemize}
+One of the more interesting aspect of this project was the selected features that were used for the final classifier; all those features came from the financial data. When we took away the feature that we engineered from the email data as well as other features from the email data, we got an increase in performance. 
+
+We believe we could get more additive data from the Enron emails by performing some natural language understanding techniques and then adding those features to the dataset.
+
+With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for two hyper-parameters for our regression model. Furthermore, with the Gradient Boosted trees, we did not tune those hyper-parameters at all. Even though regression gave us a superior result, in generalizing the solution to larger datasets, with the parallelization that is available with boosted trees, it might be advantageous to further tune that algorithm to gain more performance.
+
 
 
 
