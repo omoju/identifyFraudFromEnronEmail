@@ -343,8 +343,9 @@ For the problem of identifying fraud from the Enron financial and email data, we
 We selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning. 
 \item An ExtraTreesClassifier\\
  Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
-\item A Gradient Boosted Trees (XGBoost) Classifier\\
-From reading a lot of posts on Kaggle and perusing the past winners of KDD competitions all touting the robustness of this classifier, we wanted to see how it would perform against an unbalanced dataset like the one we have for this problem.
+\item An eXtreme Gradient Boosted (XGBoost) Classifier\\
+From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions 3 published at Kaggle's
+blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we want to see if using this classifier could give us good results with out dataset.
 
 \item A LogisticRegression (Robust, with $Lp$ = $L1$) Classifier\\
 Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
@@ -473,7 +474,7 @@ salary
 
 We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. We went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
 
-From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, we decided to go with the \textit{Logistic Regression} because it gave us the highest precision score when training on our ad-hoc features. Furthermore, the regression also had the least computational time of 0.938s, whereas the Random Forest and the ExtraTrees both computed in 18.280s, and the XGBoost computed in around 10.925s.
+From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, we decided to go with the \textit{XGBoost} learner because it gave us a high precision score as well as a near benchmark recall score when training on our ad-hoc features.
 
 
 \section*{Refinement \& Model Evaluation and Validation}
@@ -509,7 +510,25 @@ LogisticRegression          &  0.73010  &0.18800  &0.29901\\
 \label{reducedFeaturesTable}
 \end{table}
 
-Once we achieved this result, we moved forward with tuning the hyper-parameters of the robust logistic regression. We tuned the $C$ constant as well as the $tolerance$ through scklearn's \texttt(GridSearchCV) using a stratified shuffle split with a 1000 folds. The algorithm selected the best parameters as follows: C=0.125, tol=0.0001. We fitted this new classifier and achieved a precision score of 0.73.
+\subsection*{Parameters for Tree Booster}
+We tuned the following parameters for our XGBoost model to control for over-fitting and deal with our imbalance data.
+\begin{itemize}
+    \item \texttt{max\_depth}
+    \begin{itemize}
+        \item Maximum depth of tree
+        \item Range [1, $\infty$], default 6
+    \end{itemize}
+    \item \texttt{minimum\_child\_weight}
+    \begin{itemize}
+        \item Minimum sum of instance weight needed in children
+        \item Range $[0,\infty]$ default 0
+    \end{itemize}
+    \item \texttt{max\_delta\_step}
+    \begin{itemize}
+        \item maximum delta step that each trees weight is allowed to be
+        \item Range $[0, \infty]$ default 0
+    \end{itemize}
+\end{itemize}
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
@@ -539,6 +558,13 @@ With respect to the algorithms used, there a definite ways these algorithms coul
 
 
 
+%--------------------------------------------------------------------------------
+%  REFERENCE LIST
+%--------------------------------------------------------------------------------
+\vspace{4\baselineskip}\vspace{-\parskip} % Creaters proper 4 blank line spacing.
+\footnotesize % Makes bibliography 10 pt font.
+\bibliographystyle{unsrtnat} %Can use a different style as long as it is one which uses numbered references in the text.
+\bibliography{ml}
 
 
 
