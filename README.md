@@ -14,6 +14,7 @@ This project requires Python 2.7 and the following Python libraries installed:
 - [NumPy](http://www.numpy.org/)
 - [Pandas](http://pandas.pydata.org/)
 - [Scikit-learn](http://scikit-learn.org/stable/)
+- [XGBoost](https://github.com/dmlc/xgboost)
 
 ## Code
 
