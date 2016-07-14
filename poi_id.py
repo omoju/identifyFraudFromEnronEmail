@@ -65,100 +65,6 @@ from helper_files import compareTwoFeatures, computeFraction, findPersonBasedOnT
 with open(dataPath+'final_project/final_project_dataset.pkl', "r") as data_file:
     data_dict = pickle.load(data_file)
     
-    
-
-
-# In[5]:
-
-#Stylistic Options for plots
-tableau20 = [(31, 119, 180), (174, 199, 232), (255, 127, 14), (255, 187, 120),    
-             (44, 160, 44), (152, 223, 138), (214, 39, 40), (255, 152, 150),    
-             (148, 103, 189), (197, 176, 213), (140, 86, 75), (196, 156, 148),    
-             (227, 119, 194), (247, 182, 210), (127, 127, 127), (199, 199, 199),    
-             (188, 189, 34), (219, 219, 141), (23, 190, 207), (158, 218, 229)]  
-
-for i in range(len(tableau20)):    
-    r, g, b = tableau20[i]    
-    tableau20[i] = (r / 255., g / 255., b / 255.)
-
-
-# ## Outlier removal
-# If there are outliers, remove outliers
-# 
-# This is an iteratable process. I need to do this for each combination of features I want to use
-# 
-
-# In[ ]:
-
-
-
-
-# In[6]:
-
-plt.rcParams["axes.labelsize"] = 16.
-plt.rcParams["xtick.labelsize"] = 14.
-plt.rcParams["ytick.labelsize"] = 14.
-plt.rcParams["legend.fontsize"] = 11.
-plt.rcParams["axes.titlesize"] = 1.25 * plt.rcParams['font.size']
-plt.rcParams['figure.figsize'] = (8, 6)
-
-
-# In[7]:
-
-data = compareTwoFeatures('salary', 'bonus', data_dict, "SALARY versus BONUS")
-print "Clean data for outliers"
-
-
-# In[8]:
-
-salary = featureFormat(data_dict, ['salary'], remove_any_zeroes=True)
-
-
-
-
-ax = plt.plot(salary, label='Salary', color=tableau20[0])
-
-
-_= plt.xlabel('datapoint value')
-_= plt.title('Salary')
-
-#_= plt.legend(loc='upper center', shadow=True, fontsize='medium')
-_= plt.legend()
-plt.show()
-
-
-# In[ ]:
-
-
-
-
-# In[9]:
-
-np.where(data > 0.8 * 1e8) # This is where the outlier is, what I have to do now is find out who it is
-
-
-# In[10]:
-
-data[57] # So whose bonus is 97343619?
-# What’s the name of the dictionary key of this data point?
-
-
-# In[11]:
-
-for key, value in data_dict.iteritems():
-    if (value['bonus'] >= int(data[57][1]) and 
-        value['bonus'] != "NaN" and
-        value['salary'] != "NaN"):
-        print "{:20}{:12}${:<12,.2f}{:12}${:<12,.2f}".format(key, 'salary is ', value['salary'],
-                                                   ' bonus ', value['bonus'])
-        
-    if (value['restricted_stock'] < 0):
-        print "{:20}{:12}{:12}".format(key, 'restricted_stock is ', value['restricted_stock'])
-
-
-
-
-# In[12]:
 
 # Remove the source of the outlier
 
@@ -169,197 +75,6 @@ print "Deleted following records with keys:"
 print 'TOTAL'
 print 'BHATNAGAR SANJAY'
 
-# We can now go back and rerun the regression to see what the data really looks like.
-
-
-# In[13]:
-
-data = compareTwoFeatures('salary', 'bonus', data_dict, "SALARY versus BONUS cleansed of outliers")
-
-
-# ## Task: Data exploration
-# - Get descriptive statistics
-# 
-# 
-
-# In[14]:
-
-## Creating a pandas dataframe so that we can easily get descriptive statistics about our features
-
-import itertools
-
-
-salary = featureFormat(data_dict, ['salary'], remove_any_zeroes=True)
-bonus = featureFormat(data_dict, ['bonus'], remove_any_zeroes=True)
-exerStockOptions = featureFormat(data_dict, ['exercised_stock_options'], remove_any_zeroes=True)
-restrictedStock = featureFormat(data_dict, ['restricted_stock'], remove_any_zeroes=True)
-
-bonus = list(itertools.chain.from_iterable(bonus))
-salary = list(itertools.chain.from_iterable(salary))
-exerStockOptions = list(itertools.chain.from_iterable(exerStockOptions))
-restrictedStock = list(itertools.chain.from_iterable(restrictedStock))
-
-
-
-
-# In[15]:
-
-## Pad feature list with zeros to ensure all columns have equal lenght
-## Otherwise we won't be able to transfor the individual feature list into a dataframe
-
-print "restrictedStock: ", len(restrictedStock)
-size = len(restrictedStock) - len(bonus)
-temp = [0.0] * size 
-
-
-print "bonus: ", len(bonus)
-bonus = bonus + temp
-
-size = len(restrictedStock) - len(salary)
-temp = [0.0] * size 
-
-print "salary: ", len(salary)
-salary = salary + temp
-
-
-size = len(restrictedStock) - len(exerStockOptions)
-temp = [0.0] * size 
-
-print "exerStockOptions: ", len(exerStockOptions)
-exerStockOptions = exerStockOptions + temp
-
-
-# In[16]:
-
-import pandas as pd
-
-
-df = pd.DataFrame({'salary': salary, 'bonus': bonus, 'exercisedStockOptions': exerStockOptions, 
-                   'restrictedStock': restrictedStock})
-x = range(0,len(df))
-
-pltSalary = df['salary']
-
-ax = plt.plot(pltSalary, label='Salary', color=tableau20[0])
-fill_between(x, pltSalary, 0, alpha=0.5, color=tableau20[19])
-
-_= plt.xlabel('datapoint value')
-_= plt.title('Salary')
-
-#_= plt.legend(loc='upper center', shadow=True, fontsize='medium')
-_= plt.legend()
-plt.xlim(0, 94)
-plt.show()
-
-df['salary'].describe()
-
-
-# In[17]:
-
-x = range(0,len(df))
-
-plt.plot(x, df['exercisedStockOptions'], label='Exercised Stock Options', color=tableau20[8])
-fill_between(x, df['exercisedStockOptions'], 0, alpha=0.5, color=tableau20[19])
-
-_= plt.xlabel('datapoint value')
-_= plt.title('Exercised Stocks')
-
-_= plt.legend()
-plt.xlim(0, 100)
-plt.show()
-
-df['exercisedStockOptions'].describe()
-
-
-# In[18]:
-
-x = range(0,len(df))
-
-plt.plot(x, df['restrictedStock'], label='Restricted Stock', color=tableau20[0])
-fill_between(x, df['restrictedStock'], 0, alpha=0.5, color=tableau20[4])
-
-_= plt.xlabel('datapoint value')
-_= plt.title('Restricted Stock')
-
-_= plt.legend()
-
-plt.xlim(0, 108)
-plt.show()
-
-df['restrictedStock'].describe()
-
-
-# In[19]:
-
-x = range(0,len(df))
-
-plt.plot(x, df['bonus'], label='Bonus', color=tableau20[0])
-fill_between(x, df['bonus'], 0, alpha=0.5, color=tableau20[4])
-
-_= plt.xlabel('datapoint value')
-_= plt.title('Bonus')
-plt.xlim(0, 81)
-_= plt.legend()
-
-df['bonus'].describe()
-
-
-# In[20]:
-
-def printLatex(feature1, feature2, the_data_dict, treshold):
-    def getKey(item):
-        return item[2]
-
-    temp = []
-    for key, value in the_data_dict.iteritems():
-        if (value[feature1] != "NaN") and (value[feature2] != "NaN" and value[feature2] > treshold):
-            temp.append(( key, value[feature1], value[feature2]))
-            
-    ### print out in ascending order of feature2    
-    temp = sorted(temp, key=getKey)
-    print "{:20}{:3}{:14}{:3}{:12}{:3}".format("Name".upper(), '&', feature1.upper(), '&', feature2.upper(), '\\\\')
-    
-    for item in temp:    
-        print "{:20}{:3}\${:<14,.2f}{:3}{:12,}{:3}".format(item[0], '&', item[1], '&', item[2], '\\\\')
-           
-    
-
-
-# In[21]:
-
-f1, f2 = 'salary','exercised_stock_options'
-data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus EXERCISED STOCK OPTIONS")
-
-
-# In[22]:
-
-treshold = 8000000
-#printLatex(f1, f2, data_dict, treshold)
-
-
-# In[23]:
-
-f1, f2 = 'salary','restricted_stock'
-data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus RESTRICTED STOCK")
-
-
-
-# In[24]:
-
-treshold = 3000000
-#printLatex(f1, f2, data_dict, treshold)
-
-
-# In[25]:
-
-f1, f2 = 'salary','bonus'
-data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus BONUS")
-
-
-# In[26]:
-
-treshold = 4000000
-#printLatex(f1, f2, data_dict, treshold)
 
 
 # ### Engineered Feature
@@ -380,15 +95,12 @@ for name in data_dict:
     from_poi_to_this_person = data_point["from_poi_to_this_person"]
     to_messages = data_point["to_messages"]
     fraction_from_poi = computeFraction( from_poi_to_this_person, to_messages )
-    #print'{:5}{:35}{:.2f}'.format('FROM ', name, fraction_from_poi)
     data_point["fraction_from_poi"] = fraction_from_poi
 
 
     from_this_person_to_poi = data_point["from_this_person_to_poi"]
     from_messages = data_point["from_messages"]
     fraction_to_poi = computeFraction( from_this_person_to_poi, from_messages )
-    #print fraction_to_poi
-    #print'{:5}{:35}{:.2f}'.format('TO: ', name, fraction_to_poi)
     submit_dict[name]={"from_poi_to_this_person":fraction_from_poi,
                        "from_this_person_to_poi":fraction_to_poi}
     
@@ -567,7 +279,7 @@ print("done in %0.3fs" % (time() - t0))
 cm_et = [[results_et['true_negatives'], results_et['false_negatives']],
      [results_et['true_positives'], results_et['false_positives']]]
 
-print cm_et
+
 
 
 # In[34]:
@@ -589,7 +301,7 @@ print("done in %0.3fs" % (time() - t0))
 cm_rf = [[results_rf['true_negatives'], results_rf['false_negatives']],
      [results_rf['true_positives'], results_rf['false_positives']]]
 
-print cm_rf
+
 
 
 # In[44]:
@@ -610,8 +322,7 @@ print("done in %0.3fs" % (time() - t0))
 cm_xgb = [[results_xgb['true_negatives'], results_xgb['false_negatives']],
      [results_xgb['true_positives'], results_xgb['false_positives']]]
 
-print cm_xgb
-print clf
+
 
 
 # In[36]:
@@ -631,7 +342,7 @@ print("done in %0.3fs" % (time() - t0))
 cm_lr = [[results_lr['true_negatives'], results_lr['false_negatives']],
      [results_lr['true_positives'], results_lr['false_positives']]]
 
-print cm_lr
+
 
 
 # In[37]:
@@ -651,7 +362,7 @@ print_Output_Table(results, 1)
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedShuffleSplit
 
-print '_'*20, 'Tuning XGBoost', '_'*20
+print '_'*20, 'Tuning XGBClassifier', '_'*20
 print "Training the data"
 
 
@@ -679,7 +390,6 @@ grid = GridSearchCV(XGBC(**params),
                             cv_params, cv=ssscv, n_jobs = -1) 
 grid.fit(features, labels)
 
-# Optimize for precision
 
 
 
@@ -718,13 +428,6 @@ print "f1 : %.3f" % results_tuning['f1']
 
 dump_classifier_and_data(clf, my_dataset, feature_list)
 
-
-# In[ ]:
-
-
-
-
-# In[ ]:
 
 
 
