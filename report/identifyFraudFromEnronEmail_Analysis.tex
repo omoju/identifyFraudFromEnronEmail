@@ -136,11 +136,13 @@ The Enron dataset while it contains a robust amount of emails, contains data for
     \includegraphics[width=0.6\textwidth]{figures/poi}
     \label{poi}}
     
-    \caption{\textbf{Person of Interest plot.}\textit{ By visualizing this feature which acts as the label for our classifiers, we can see that the dataset is extremely skewed in favor of non-persons of interest.}}
+    \caption{\textbf{Person of Interest plot.}\textit{The histograms shows an unbalanced target dataset with approximately 112 values of \{0 - not POI\} and 18 values of \{1 - POI\}.}}
 \end{figure}
 
 
-For this reason, using ``Accuracy'' as a performance metric leads to misleading information. A more apt measure of the performance of a learner should take into account the results of a confusion matrix and  calculate ``precision'' and ``recall,'' noting that precision is more a measure of a classifiers exactness.
+For this reason, using ``Accuracy'' as a performance metric leads to misleading information. A more apt measure of the performance of a learner should take into account the results of a confusion matrix and  calculate ``precision,'' ``recall,'' and ``$F_1$'' scores. 
+
+For the task of identifying persons who may be involved with fraud at Enron, we will be using the $F_1$, score, i.e., weighted average of the precision and recall as our metric of choice.
 
 
 %----------------------------------------------------------------------------------------
@@ -344,8 +346,8 @@ We selected this learner because it is considered one of the best off-the-shelf 
 \item An ExtraTreesClassifier\\
  Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
 \item An eXtreme Gradient Boosted (XGBoost) Classifier\\
-From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions 3 published at Kaggle's
-blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we want to see if using this classifier could give us good results with out dataset.
+XGBoost is an advanced implementation of gradient boosting algorithm. From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions 3 published at Kaggle's
+blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we want to see if using this classifier could give us good results with our dataset.
 
 \item A LogisticRegression (Robust, with $Lp$ = $L1$) Classifier\\
 Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
@@ -446,7 +448,7 @@ XGBClassifier            & 0.416       & 0.196     & 0.266\\
 ExtraTreesClassifier     &  0.449       &  0.140     &  0.213     \\ 
 LogisticRegression       &  0.499       &  0.169     &  0.252     \\ 
 RandomForestClassifier   &  0.404       &  0.146     &  0.215     \\ 
-XGBClassifier            &  0.422       &  0.299     &  0.350     \\ 
+\hilight{XGBClassifier}  &  \hilight{0.422} &  \hilight{0.299} &  \hilight{0.350}     \\ 
 
 \hline % inserts single-line
 
@@ -454,7 +456,7 @@ XGBClassifier            &  0.422       &  0.299     &  0.350     \\
 \label{benchMarkScoresTable}
 \end{table}
 
-We used these features selected by the algorithms along side our domain guided features on our four baseline learners, the results can be see in table \ref{benchMarkScoresTable}. From this experiment, we decided to go with our ad-hoc generated features because the performance was superior when we considered the precision score of all four learners. It is important to note that the other features were not woeful in their performance, and overall, these features with baseline classifiers had already put us over the threshold of the benchmark precision score---0.3---we were to surpass.
+We used these features selected by the algorithms along side our domain guided features on our four baseline learners, the results can be see in table \ref{benchMarkScoresTable}. From this experiment, we decided to go with our ad-hoc generated features because the performance was superior when we considered the $F_1$ score of all four learners. It is important to note that the other features were not woeful in their performance, and overall, these features with baseline classifiers had already put us over the threshold of the benchmark precision score---0.3---we were to surpass.
 
 For the final algorithm, we ended up going with our intuition and selecting features that we had explored in the data analysis. These features are as follows: 
 \begin{verbatim}
@@ -472,9 +474,11 @@ salary
 
 \section*{Implementation}
 
-We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. We went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
+We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. 
 
-From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, we decided to go with the \textit{XGBoost} learner because it gave us a high precision score as well as a near benchmark recall score when training on our ad-hoc features.
+Instead, we went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
+
+From our trials we generated the following scores as can be seen in table \ref{benchMarkScoresTable}. From these trials, we decided to go with the \textit{XGBoost} learner because it gave us a high precision score as well as a near benchmark recall score when training on our ad-hoc features. As expected, it was also the learner with the highest $F_1$ score.
 
 
 \section*{Refinement \& Model Evaluation and Validation}
@@ -483,6 +487,51 @@ To improve on the performance of the algorithm, we decided to reduce the number 
 bonus
 exercised_stock_options
 restricted_stock 
+\end{verbatim}
+
+\section*{Parameter Tuning}
+Once we had settled on the features we would be using for our classification task, we turned our attention to focusing on tuning the parameters for our model.
+
+Using sklearn's \texttt{GridSearch} function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
+
+\begin{itemize}
+\item Parameters for Tree Booster
+    \begin{itemize}
+        \item \texttt{max\_depth}
+        \begin{itemize}
+            \item Maximum depth of tree
+            \item Range [1, $\infty$], default 6, tuned on $[3,5,7]$
+        \end{itemize}
+        \item \texttt{minimum\_child\_weight}
+        \begin{itemize}
+            \item Minimum sum of instance weight needed in children
+            \item Range $[0,\infty]$ default 0, tuned on $[1,3,5]$
+        \end{itemize}
+        \item \texttt{max\_delta\_step}
+        \begin{itemize}
+            \item Maximum delta step that each trees weight is allowed to be
+            \item Range $[0, \infty]$ default 0, tuned on $[0, 1, 2]$
+        \end{itemize}
+    \end{itemize}
+
+\item Task Parameter
+    \begin{itemize}
+        \item \texttt{learning\_rate}
+        \begin{itemize}
+            \item Scale the contribution of each tree by learning rate
+            \item Range $[0, 1]$, typical values $[0.01, 0.2]$, tuned on $[0.01, 0.1, 0.02, 0.2, 0.25, 0.3]$
+        \end{itemize}
+    \end{itemize}
+
+\end{itemize}
+
+Once our search through the parameter space to find the combination of parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
+\begin{verbatim}
+XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
+       gamma=0, learning_rate=0.02, max_delta_step=1, max_depth=3,
+       min_child_weight=1, missing=None, n_estimators=100, nthread=-1,
+       objective='binary:logistic', reg_alpha=0, reg_lambda=1,
+       scale_pos_weight=1, seed=0, silent=True, subsample=1)
 \end{verbatim}
 
 \setlength{\extrarowheight}{1.5pt}
@@ -501,34 +550,20 @@ LogisticRegression       &  0.630       &  0.202     &  0.306     \\
 RandomForestClassifier   &  0.483       &  0.190     &  0.272     \\ 
 XGBClassifier            &  0.505       &  0.332     &  0.400     \\ 
 \hline% inserts single-line
-\multicolumn{4}{|c|}{Results of tuning}\\[5pt]
-\hline
 
-LogisticRegression          &  0.73010  &0.18800  &0.29901\\ 
+\multicolumn{4}{|c|}{}\\
+\multicolumn{4}{|c|}{Result of tuning the \textbf{XGBoost} classifier}\\[5pt]
+\hline
+& \multicolumn{3}{c|}{Metrics}\\[5pt]
+\cline{2-4} 
+& Precision & Recall & F1\\[0.5ex]
+\hline % inserts single-line
+
+XGBClassifier           &  0.617  & 0.331  & 0.431\\ 
 \hline
 \end{tabular}
 \label{reducedFeaturesTable}
 \end{table}
-
-\subsection*{Parameters for Tree Booster}
-We tuned the following parameters for our XGBoost model to control for over-fitting and deal with our imbalance data.
-\begin{itemize}
-    \item \texttt{max\_depth}
-    \begin{itemize}
-        \item Maximum depth of tree
-        \item Range [1, $\infty$], default 6
-    \end{itemize}
-    \item \texttt{minimum\_child\_weight}
-    \begin{itemize}
-        \item Minimum sum of instance weight needed in children
-        \item Range $[0,\infty]$ default 0
-    \end{itemize}
-    \item \texttt{max\_delta\_step}
-    \begin{itemize}
-        \item maximum delta step that each trees weight is allowed to be
-        \item Range $[0, \infty]$ default 0
-    \end{itemize}
-\end{itemize}
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
@@ -539,22 +574,24 @@ We tuned the following parameters for our XGBoost model to control for over-fitt
 
 \section*{Reflection}
 
-We have presented a solution to identifying ``persons of interest'' who \textit{might}have played a significant role in perpetuating fraud at Enron from their finance and email data. We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
+We have presented a solution to identifying ``persons of interest'' who \textit{might} have played a significant role in perpetuating fraud at Enron from their finance and email data. We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
 
-The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm to use. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, ``precision'' was the more apt choice.
+The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm to use. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, a combination of both the ``precision'' and ``recall'' as realized in the ``$F_1$'' score was the more apt choice.
 
 From our analysis we discovered some outliers and removed them from the dataset. We took a close look at ``exercised stock options'' and ``restricted stocks'' to see how the senior executives were compensated. Based on our working hypothesis that if fraud was indeed been fomented at Enron, then more than likely the vehicle that the senior officers would take to get the money out would be through an inflated allocation of shares. 
 
-We selected three ensemble learners (Random Forest, Extra Trees, Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. We selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since we didn't have existing benchmarks we could use to reason about the effectiveness of our approach, we resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
+We selected three ensemble learners (Random Forest, Extra Trees, eXtreme Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. We selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since we didn't have existing benchmarks we could use to reason about the effectiveness of our approach, we resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
 
-We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the logistic regression classifier as the algorithm to use for this problem. We tuned that algorithm and obtained a precision score of 0.7.
+We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the eXtreme Boosted Trees classifier as the learner to use. We reduced our feature space and tuned our classifier to achieve a this final score, \{$F_1$: 0.431, precision: 0.617, recall: 0.331\}.
 
 \section*{Improvement}
 One of the more interesting aspect of this project was the selected features that were used for the final classifier; all those features came from the financial data. When we took away the feature that we engineered from the email data as well as other features from the email data, we got an increase in performance. 
 
 We believe we could get more additive data from the Enron emails by performing some natural language understanding techniques and then adding those features to the dataset.
 
-With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for two hyper-parameters for our regression model. Furthermore, with the Gradient Boosted trees, we did not tune those hyper-parameters at all. Even though regression gave us a superior result, in generalizing the solution to larger datasets, with the parallelization that is available with boosted trees, it might be advantageous to further tune that algorithm to gain more performance.
+With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for four parameters for our eXtreme Gradient Boosted trees. That algorithm has many more parameters that could yield a stronger model.
+
+If time was not a factor, we could create a pipeline that used Grid Search to go through a combination of features while optimizing the XGBoost algorithm for its own parameters. We could do an exhaustive search of this feature + parameters space to obtain a model that would be most optimal for describing this data.
 
 
 

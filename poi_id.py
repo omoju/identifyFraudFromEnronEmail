@@ -207,21 +207,25 @@ restrictedStock = list(itertools.chain.from_iterable(restrictedStock))
 ## Pad feature list with zeros to ensure all columns have equal lenght
 ## Otherwise we won't be able to transfor the individual feature list into a dataframe
 
+print "restrictedStock: ", len(restrictedStock)
 size = len(restrictedStock) - len(bonus)
 temp = [0.0] * size 
 
 
+print "bonus: ", len(bonus)
 bonus = bonus + temp
 
 size = len(restrictedStock) - len(salary)
 temp = [0.0] * size 
 
+print "salary: ", len(salary)
 salary = salary + temp
 
 
 size = len(restrictedStock) - len(exerStockOptions)
 temp = [0.0] * size 
 
+print "exerStockOptions: ", len(exerStockOptions)
 exerStockOptions = exerStockOptions + temp
 
 
@@ -250,34 +254,7 @@ plt.show()
 df['salary'].describe()
 
 
-# In[ ]:
-
-
-
-
 # In[17]:
-
-
-
-plt.plot(x, df['exercisedStockOptions'], label='Exercised Stock Options', color=tableau20[8])
-plt.plot(x, df['restrictedStock'], label='Restricted Stock', color=tableau20[0])
-#plt.plot(x, df['bonus'], label='Bonus', color=tableau20[4])
-
-
-fill_between(x, df['exercisedStockOptions'], 0, alpha=0.5, color=tableau20[19])
-fill_between(x, df['restrictedStock'], 0, alpha=0.5, color=tableau20[4])
-#fill_between(x, df['bonus'], 0, alpha=0.5,color=tableau20[4])
-
-
-_= plt.xlabel('datapoint value')
-_= plt.title('')
-
-#_= plt.legend(loc='upper center', shadow=True, fontsize='medium')
-_= plt.legend(bbox_to_anchor=(1.3, 1), loc=2, borderaxespad=1, fontsize='large')
-plt.show()
-
-
-# In[18]:
 
 x = range(0,len(df))
 
@@ -294,7 +271,7 @@ plt.show()
 df['exercisedStockOptions'].describe()
 
 
-# In[19]:
+# In[18]:
 
 x = range(0,len(df))
 
@@ -312,7 +289,7 @@ plt.show()
 df['restrictedStock'].describe()
 
 
-# In[20]:
+# In[19]:
 
 x = range(0,len(df))
 
@@ -327,7 +304,7 @@ _= plt.legend()
 df['bonus'].describe()
 
 
-# In[21]:
+# In[20]:
 
 def printLatex(feature1, feature2, the_data_dict, treshold):
     def getKey(item):
@@ -348,46 +325,41 @@ def printLatex(feature1, feature2, the_data_dict, treshold):
     
 
 
-# In[22]:
+# In[21]:
 
 f1, f2 = 'salary','exercised_stock_options'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus EXERCISED STOCK OPTIONS")
 
 
-# In[23]:
+# In[22]:
 
 treshold = 8000000
 #printLatex(f1, f2, data_dict, treshold)
 
 
-# In[24]:
+# In[23]:
 
 f1, f2 = 'salary','restricted_stock'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus RESTRICTED STOCK")
 
 
 
-# In[25]:
+# In[24]:
 
 treshold = 3000000
 #printLatex(f1, f2, data_dict, treshold)
 
 
-# In[26]:
+# In[25]:
 
 f1, f2 = 'salary','bonus'
 data = compareTwoFeatures(f1, f2, data_dict, "SALARY versus BONUS")
 
 
-# In[27]:
+# In[26]:
 
 treshold = 4000000
 #printLatex(f1, f2, data_dict, treshold)
-
-
-# In[28]:
-
-data_dict['LAVORATO JOHN J']
 
 
 # ### Engineered Feature
@@ -398,7 +370,7 @@ data_dict['LAVORATO JOHN J']
 # - The first feature must be "poi".
 # - Store to `my_dataset` for easy export below.
 
-# In[29]:
+# In[27]:
 
 submit_dict = {}
 for name in data_dict:
@@ -424,18 +396,13 @@ for name in data_dict:
     
 
 
-# In[30]:
-
-f1, f2 = 'bonus','exercised_stock_options'
-data = compareTwoFeatures(f1, f2, data_dict, 'Bonus v Exercised Stock Options')
-
-
 # Extract features and labels from dataset
 
-# In[142]:
+# In[28]:
 
 feature_list = ['poi', 'bonus', 'exercised_stock_options', 'restricted_stock']
-
+#'fraction_from_poi','fraction_to_poi',
+#'from_poi_to_this_person','from_this_person_to_poi','salary']
 
 my_dataset = data_dict
 
@@ -459,7 +426,7 @@ print feature_list
 # 
 # ['poi', 'exercised_stock_options', 'total_stock_value', 'bonus', 'expenses', 'other', 'total_payments', 'restricted_stock', 'deferred_income', 'shared_receipt_with_poi', 'salary']
 
-# In[143]:
+# In[29]:
 
 import pandas as pd
 
@@ -480,12 +447,12 @@ _ = p.set_title('Histogram of POI values')
 # - Achieve better than .3 precision and recall. Using our testing script. Check the `tester.py` script in the final project folder for details on the evaluation method, especially the test_classifier function. Because of the small size of the dataset, the script uses `stratified shuffle split cross validation`. For more info: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 # 
 
-# In[144]:
+# In[30]:
 
 feature_list
 
 
-# In[145]:
+# In[31]:
 
 from sklearn.cross_validation import StratifiedShuffleSplit
 
@@ -544,92 +511,7 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
 
 
 
-# In[146]:
-
-from sklearn.cross_validation import cross_val_score 
-from sklearn.metrics import precision_score, confusion_matrix, classification_report
-from sklearn.ensemble import ExtraTreesClassifier
-
-folds = 1000
-
-
-clf = ExtraTreesClassifier()
-print '_'*20, clf.__class__.__name__, '_'*20
-print "Training the data"
-
-
-t0 = time()
-results_et = test_classifier(clf, my_dataset, feature_list, folds)
-print("done in %0.3fs" % (time() - t0)) 
-
-cm_et = [[results_et['true_negatives'], results_et['false_negatives']],
-     [results_et['true_positives'], results_et['false_positives']]]
-
-print cm_et
-
-
-# In[147]:
-
-
-from sklearn.ensemble import RandomForestClassifier
-from time import time
-
-
-clf = RandomForestClassifier()
-print '\n', '_'*20, clf.__class__.__name__, '_'*20
-print "Training the data"
-
-
-t0 = time()
-results_rf = test_classifier(clf, my_dataset, feature_list, folds)
-print("done in %0.3fs" % (time() - t0))
-
-cm_rf = [[results_rf['true_negatives'], results_rf['false_negatives']],
-     [results_rf['true_positives'], results_rf['false_positives']]]
-
-print cm_rf
-
-
-# In[148]:
-
-from xgboost import XGBClassifier as XGBC
-
-clf = XGBC()
-print '\n', '_'*20, clf.__class__.__name__, '_'*20
-print "Training the data"
-
-
-t0 = time()
-results_xgb = test_classifier(clf, my_dataset, feature_list, folds)
-print("done in %0.3fs" % (time() - t0))  
-
-cm_xgb = [[results_xgb['true_negatives'], results_xgb['false_negatives']],
-     [results_xgb['true_positives'], results_xgb['false_positives']]]
-
-print cm_xgb
-
-
-# In[149]:
-
-from sklearn.linear_model import LogisticRegression
-
-clf = LogisticRegression(penalty='l1')
-
-print '\n', '_'*20, clf.__class__.__name__, '_'*20
-print "Training the data"
-
-t0 = time()
-scores = cross_val_score(clf, features, labels, cv=10)
-results_lr= test_classifier(clf, my_dataset, feature_list, folds)
-print("done in %0.3fs" % (time() - t0))
-
-cm_lr = [[results_lr['true_negatives'], results_lr['false_negatives']],
-     [results_lr['true_positives'], results_lr['false_positives']]]
-
-print cm_lr
-
-
-# In[150]:
+# In[32]:
 
 def print_Output_Table(results, prntLatex):
     """Print output table for classifier scores.
@@ -664,73 +546,175 @@ def print_Output_Table(results, prntLatex):
                                                             results[i]['false_negatives'])
 
 
-# In[151]:
+# In[33]:
+
+from sklearn.cross_validation import cross_val_score 
+from sklearn.metrics import precision_score, confusion_matrix, classification_report
+from sklearn.ensemble import ExtraTreesClassifier
+
+folds = 1000
+
+
+clf = ExtraTreesClassifier()
+print '_'*20, clf.__class__.__name__, '_'*20
+print "Training the data"
+
+
+t0 = time()
+results_et = test_classifier(clf, my_dataset, feature_list, folds)
+print("done in %0.3fs" % (time() - t0)) 
+
+cm_et = [[results_et['true_negatives'], results_et['false_negatives']],
+     [results_et['true_positives'], results_et['false_positives']]]
+
+print cm_et
+
+
+# In[34]:
+
+
+from sklearn.ensemble import RandomForestClassifier
+from time import time
+
+
+clf = RandomForestClassifier()
+print '_'*20, clf.__class__.__name__, '_'*20
+print "Training the data"
+
+
+t0 = time()
+results_rf = test_classifier(clf, my_dataset, feature_list, folds)
+print("done in %0.3fs" % (time() - t0))
+
+cm_rf = [[results_rf['true_negatives'], results_rf['false_negatives']],
+     [results_rf['true_positives'], results_rf['false_positives']]]
+
+print cm_rf
+
+
+# In[44]:
+
+from xgboost import XGBClassifier as XGBC
+
+
+clf = XGBC()
+
+print '_'*20, clf.__class__.__name__, '_'*20
+print "Training the data"
+
+
+t0 = time()
+results_xgb = test_classifier(clf, my_dataset, feature_list, folds)
+print("done in %0.3fs" % (time() - t0))  
+
+cm_xgb = [[results_xgb['true_negatives'], results_xgb['false_negatives']],
+     [results_xgb['true_positives'], results_xgb['false_positives']]]
+
+print cm_xgb
+print clf
+
+
+# In[36]:
+
+from sklearn.linear_model import LogisticRegression
+
+clf = LogisticRegression(penalty='l1')
+
+print '_'*20, clf.__class__.__name__, '_'*20
+print "Training the data"
+
+t0 = time()
+scores = cross_val_score(clf, features, labels, cv=10)
+results_lr= test_classifier(clf, my_dataset, feature_list, folds)
+print("done in %0.3fs" % (time() - t0))
+
+cm_lr = [[results_lr['true_negatives'], results_lr['false_negatives']],
+     [results_lr['true_positives'], results_lr['false_positives']]]
+
+print cm_lr
+
+
+# In[37]:
 
 results = [results_et, results_lr, results_rf, results_xgb]
 
 
-# In[152]:
+# In[38]:
 
 print_Output_Table(results, 1)
 
 
 # ## Tune choosen algorithm
 
-# In[153]:
-
-
+# In[90]:
 
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedShuffleSplit
 
-print '\n', '_'*20, 'Tuning LogisticRegression', '_'*20
+print '_'*20, 'Tuning XGBoost', '_'*20
 print "Training the data"
 
-clf = LogisticRegression( penalty='l1', solver='liblinear') 
+
+# max_delta_step, Maximum delta step we allow each tree's weight estimation to be. 
+# If the value is set to 0, it means there is no constraint. If it is set to a positive value, 
+# it can help making the update step more conservative. Usually this parameter is not needed, 
+# but it might help in logistic regression when class is extremely imbalanced. 
+# Set it to value of 1-10 might help control the update
+
+cv_params = {'max_depth': [3,5,7],
+             'min_child_weight': [1,3,5],
+             'max_delta_step':[0, 1, 2],
+             'learning_rate': [0.01, 0.1, 0.02, 0.2]}
+
+params = {}
+params['colsample_bytree'] = 1
+params['objective'] = 'binary:logistic'
 
 # Build a stratified shuffle object because of unbalanced data
 folds = 1000
 ssscv = StratifiedShuffleSplit(labels, folds, random_state = 42)
 
-# For an initial search, a logarithmic grid with basis 10 is often helpful. 
-# Using a basis of 2, a finer tuning can be achieved but at a much higher cost.
 
-C_range = 2. ** np.arange(-3, 2)
-tolerance = [1e-2, 1e-3, 1e-4]
-
-param_grid = dict(tol=tolerance, C=C_range)  
-
-grid = GridSearchCV(clf, param_grid=param_grid, cv=ssscv)
+grid = GridSearchCV(XGBC(**params), 
+                            cv_params, cv=ssscv, n_jobs = -1) 
 grid.fit(features, labels)
 
+# Optimize for precision
 
 
-# In[164]:
+
+
+# In[91]:
 
 clf =  grid.best_estimator_
 print clf
-
 results_tuning = test_classifier(clf, my_dataset, feature_list, folds)
 
 print "\n"
-print '\n', '_'*20, 'Metrics of tuned '+clf.__class__.__name__, '_'*20, '\n'
-for item in results_tuning:
-    print item, ": ", results_tuning[item]
+print '_'*20, 'Metrics of tuned '+clf.__class__.__name__, '_'*20, '\n'
+print "precision : %.3f" % results_tuning['precision']
+print "recall, : %.3f" % results_tuning['recall']
+print "f1 : %.3f" % results_tuning['f1']
 
 
-# LogisticRegression(C=0.125, class_weight=None, dual=False, fit_intercept=True,
-#           intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
-#           penalty='l1', random_state=None, solver='liblinear', tol=0.0001,
-#           verbose=0, warm_start=False)
-#           
-#           
-# 	Accuracy: 0.86438	Precision: 0.73010	Recall: 0.18800	F1: 0.29901	F2: 0.22079
-# 	Total predictions: 13000	True positives:  376	False positives:  139	False negatives: 1624	True negatives: 10861
+# XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
+#        gamma=0, learning_rate=0.02, max_delta_step=1, max_depth=3,
+#        min_child_weight=1, missing=None, n_estimators=100, nthread=-1,
+#        objective='binary:logistic', reg_alpha=0, reg_lambda=1,
+#        scale_pos_weight=1, seed=0, silent=True, subsample=1)
+# 
+# 
+# ____________________ Metrics of tuned XGBClassifier ____________________ 
+# 
+# precision : 0.639
+# recall, : 0.318
+# f1 : 0.424
+# 
 
 # ## Task 6: Export solution
 # Dump your classifier, dataset, and features_list so anyone can check your results. You do not need to change anything below, but make sure that the version of `poi_id.py` that you submit can be run on its own and generates the necessary .pkl files for validating your results.
 
-# In[165]:
+# In[93]:
 
 dump_classifier_and_data(clf, my_dataset, feature_list)
 
