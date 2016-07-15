@@ -575,13 +575,14 @@ Once we had settled on the features we would be using for our classification tas
         \item \texttt{learning\_rate}
         \begin{itemize}
             \item Scale the contribution of each tree by learning rate
-            \item Range $[0, 1]$, typical values $[0.01, 0.2]$, tuned on $[0.01, 0.1, 0.02, 0.2, 0.25, 0.3]$
+            \item Range $[0, 1]$, tuned on $[0.01, 0.1, 0.02, 0.2, 0.25, 0.3]$
         \end{itemize}
     \end{itemize} 
+\end{itemize}
 
-We perform parameter tuning for the following reasons: just as is done in learning the function which best describes a dataset, a \texttt{GridSearchCV} algorithm also needs a performance metric to determine when it has optimally tuned parameters. 
+\textbf{Question} Discuss parameter tuning and its importance.
 
-When the learner is in the process of discovering the ideal function which describes the data, in order to prevent over fitting, we hold out a piece of the data and use it as a \textbf{test} set. 
+\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over fitting, we hold out a piece of the data and use it as a \textbf{test} set. 
 
 If \texttt{GridSearchCV} is used to optimize parameters in our model, and we test those parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
 
@@ -592,10 +593,6 @@ In the case of \textbf{K-fold CV} the data set is divided into k subsets, and th
 Cross validation is useful because it maximizes both the training and testing data so that the data can be used to provide the best learning result and the best validation result. 
 
 Especially when K-fold cross validation is used in conjunction with \texttt{GridSearchCV} we know that the final parameters that result from the process of iterative search of the parameter hyperspace are those that accurately optimize the performance metric used. If we limit the grid search to a single dataset for example, we would over-fit the parameters of the model to that particular dataset.
-
-
-
-\end{itemize}
 
 Once our search through the parameter space to find the combination of parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
 \begin{verbatim}
