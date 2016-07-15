@@ -8,6 +8,42 @@ from sklearn.cross_validation import StratifiedShuffleSplit
 import matplotlib.pyplot as plt
 
 
+def printDataTableAtThreshold(feature1, feature2, the_data_dict, threshold, prtLaTex):
+    """Print output table for feature values > threshold.
+
+    Keyword arguments:
+    feature1 --- string
+    feature2 --- sring
+    the_data_dict --- dict
+    threshold --- int
+    prtLaTex --- int
+    
+    """
+    def getKey(item):
+        return item[2]
+
+    temp = []
+    for key, value in the_data_dict.iteritems():
+        if (value[feature1] != "NaN") and (value[feature2] != "NaN" and value[feature2] > threshold):
+            temp.append(( key, value[feature1], value[feature2]))
+            
+    ### print out in ascending order of feature2    
+    temp = sorted(temp, key=getKey)
+    
+    ## print output formatted ready for LaTex
+    if prtLaTex:
+        print "{:20}{:3}{:14}{:3}{:12}{:3}".format("Name".upper(), '&', feature1.upper(), '&', feature2.upper(), '\\\\')
+    
+        for item in temp:    
+            print "{:20}{:3}\${:<14,.2f}{:3}{:12,}{:3}".format(item[0], '&', item[1], '&', item[2], '\\\\')
+    else:
+        print "{:20}{:14}{:12}".format("Name".upper(), feature1.upper(), feature2.upper())
+    
+        for item in temp:    
+            print "{:20}${:<14,.2f}{:12,}".format(item[0], item[1], item[2])
+        
+
+        
 def printClassifierOutputTable(results, prntLatex):
     """Print output table for classifier scores.
 
