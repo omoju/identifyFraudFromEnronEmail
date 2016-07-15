@@ -8,6 +8,18 @@ from sklearn.cross_validation import StratifiedShuffleSplit
 import matplotlib.pyplot as plt
 
 
+
+#Stylistic Options for plots
+tableau20 = [(31, 119, 180), (174, 199, 232), (255, 127, 14), (255, 187, 120),    
+             (44, 160, 44), (152, 223, 138), (214, 39, 40), (255, 152, 150),    
+             (148, 103, 189), (197, 176, 213), (140, 86, 75), (196, 156, 148),    
+             (227, 119, 194), (247, 182, 210), (127, 127, 127), (199, 199, 199),    
+             (188, 189, 34), (219, 219, 141), (23, 190, 207), (158, 218, 229)]  
+
+for i in range(len(tableau20)):    
+    r, g, b = tableau20[i]    
+    tableau20[i] = (r / 255., g / 255., b / 255.)
+        
 def printDataTableAtThreshold(feature1, feature2, the_data_dict, threshold, prtLaTex):
     """Print output table for feature values > threshold.
 
@@ -131,43 +143,21 @@ def validateClf(clf, dataset, feature_list, folds = 1000):
 
 
 
-def compareTwoFeatures(feature1, feature2, the_data_dict, title):
+def compareTwoFeatures(feature1, feature2, df):
     """
     Compare two features in a scatter plot and returns the datapoints
    
     Keyword arguments:
-    feature1 -- an (n x k) numpy array where n is 2 and k datapoints 
-    feature2 -- an (n x k) numpy array where n is 2 and k datapoints
+    feature1 -- a pandas dataframe col 
+    feature2 -- a pandas dataframe col
    
     """
-    
-    #Stylistic Options for plots
-    tableau20 = [(31, 119, 180), (174, 199, 232), (255, 127, 14), (255, 187, 120),    
-             (44, 160, 44), (152, 223, 138), (214, 39, 40), (255, 152, 150),    
-             (148, 103, 189), (197, 176, 213), (140, 86, 75), (196, 156, 148),    
-             (227, 119, 194), (247, 182, 210), (127, 127, 127), (199, 199, 199),    
-             (188, 189, 34), (219, 219, 141), (23, 190, 207), (158, 218, 229)]  
-
-    for i in range(len(tableau20)):    
-        r, g, b = tableau20[i]    
-        tableau20[i] = (r / 255., g / 255., b / 255.)
-    
-    
-    features_list =  [ feature1, feature2]
-    data = featureFormat(the_data_dict, features_list, remove_any_zeroes=True)
-
-    for point in data:
-        x = point[0]
-        y = point[1]
-        plt.scatter( y, x, s=80, marker = 'o' ,color=tableau20[0], alpha = 0.5)
-
-    plt.xlabel(feature2)
-    plt.ylabel(feature1)
-     #plt.grid(True)
-    _= plt.title(title)
+  
+    plt.scatter( df[feature1], df[feature2], s=80, marker = 'o' ,color=tableau20[0], alpha = 0.5)
+    plt.xlabel(feature1)
+    plt.ylabel(feature2)
+    _= plt.title(feature1.upper()+' versus '+feature2.upper(), y=1.08)
     plt.show() 
-    
-    return data
 
 def computeFraction( poi_messages, all_messages ):
     """ given a number messages to/from POI (numerator) 
