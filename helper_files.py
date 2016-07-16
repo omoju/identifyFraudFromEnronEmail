@@ -78,16 +78,7 @@ def printClassifierOutputTable(results, prntLatex):
             print "{:25}{:<12.3f}{:<10.3f}{:<10.3f}".format(results[i]['clfname'], results[i]['precision'], 
                                                  results[i]['recall'], results[i]['f1'])
         
-            
-    print "\n\n"
-    print "{:25}{:12}{:10}{:10}{:10}".format("", "TP", 'FP', 'TN', 'FN')
-    print "-"*63
-
-    for i in range(0, len(results)):
-        print "{:25}{:<12}{:<10}{:<10}{:<10}".format(results[i]['clfname'], results[i]['true_positives'], 
-                                                     results[i]['false_positives'], results[i]['true_negatives'],
-                                                            results[i]['false_negatives'])
-        
+                 
 def validateClf(clf, dataset, feature_list, folds = 1000):
     data = featureFormat(dataset, feature_list, sort_keys = True)
     labels, features = targetFeatureSplit(data)

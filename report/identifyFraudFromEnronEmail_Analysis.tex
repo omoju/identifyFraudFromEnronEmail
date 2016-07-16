@@ -534,21 +534,29 @@ We implemented the four learning algorithms. For each of the learners we impleme
 
 Instead, we went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
 
-From our trials we generated the following scores as can be seen in table \ref{tableBenchMarkScores}. From these trials, we decided to go with the \textit{XGBoost} learner because it gave us a high precision score as well as a near benchmark recall score when training on our ad-hoc features. As expected, it was also the learner with the highest $F_1$ score.
 
-
-\section*{Refinement \& Model Evaluation and Validation}
-To improve on the performance of the algorithm, we decided to reduce the number of features that were used for training. Through some trial and error, we realized if we held the feature list to the first three features, our performance improve dramatically as can be seen in table \ref{tableReducedFeatures}.
+\section*{Refinement}
+To improve on the performance of the algorithm, we decided to reduce the number of features that were used for training. Through some trial and error, we realized if we held the feature list to the first three features:
 \begin{verbatim}
 bonus
 exercised_stock_options
 restricted_stock 
 \end{verbatim}
+Our performance improved dramatically as can be seen in table \ref{tableReducedFeatures}.
 
 \section*{Parameter Tuning}
 
+\textbf{Question} Discuss parameter tuning and its importance.
 
-Once we had settled on the features we would be using for our classification task, we went on to address the problem of model selection a.k.a. parameter tuning. To achieve this we used sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit}function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
+Parameter tuning is the process of discovering \emph{optimal} choices for the hyper-parameters that support a model. These hyper-parameters are parameters that are not part of the \emph{core} specifications for describing a model as a mathematical function, i.e., they are not \emph{learned} during the training phase.
+
+These \emph{hyper}-parameters are the keys we turn that allow us to control for over-fitting. They are the tools we use to restrict the capacity of our models, i.e., how flexible the model can be. These parameters influence to a large extent either the accuracy and or speed of a model. 
+
+There are several approaches to \emph{tuning} these parameters, most of them can be considered as a search through some hyper-parameter space. Finding these parameters then becomes finding the right combinations that optimize the performance metric we are interested in optimizing for. The usual way to do that is through a grid search, a randomized grid search or smart tuning. 
+
+
+
+Once we settled on the features we would be using for our classification task, we tuned our model using sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit}function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
 
 \begin{itemize}
 \item Parameters for Tree Booster
@@ -580,21 +588,7 @@ Once we had settled on the features we would be using for our classification tas
     \end{itemize} 
 \end{itemize}
 
-\textbf{Question} Discuss parameter tuning and its importance.
-
-\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over fitting, we hold out a piece of the data and use it as a \textbf{test} set. 
-
-If \texttt{GridSearchCV} is used to optimize parameters in our model, and we test those parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
-
-Each combination of parameters is evaluated against this evaluation set. A method of doing this is called \textbf{Cross Validation}. It is a process of testing out parameter optimization on an data sample that is independent of both the testing and training data.
-
-In the case of \textbf{K-fold CV} the data set is divided into k subsets, and the holdout method is repeated k times. Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set k-1 times. Once the parameters are optimally tuned, the scientist can test the efficacy of the final model on the test set. 
-
-Cross validation is useful because it maximizes both the training and testing data so that the data can be used to provide the best learning result and the best validation result. 
-
-Especially when K-fold cross validation is used in conjunction with \texttt{GridSearchCV} we know that the final parameters that result from the process of iterative search of the parameter hyperspace are those that accurately optimize the performance metric used. If we limit the grid search to a single dataset for example, we would over-fit the parameters of the model to that particular dataset.
-
-Once our search through the parameter space to find the combination of parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
+Once we performed our search through the parameter space to find the combination of parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
 \begin{verbatim}
 XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
        gamma=0, learning_rate=0.02, max_delta_step=1, max_depth=3,
@@ -602,6 +596,46 @@ XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
        objective='binary:logistic', reg_alpha=0, reg_lambda=1,
        scale_pos_weight=1, seed=0, silent=True, subsample=1)
 \end{verbatim}
+
+
+
+\section*{Validation}
+
+\textbf{Question} Discuss validation and its importance.
+
+\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over fitting, we hold out a piece of the data and use it as a \textbf{test} set. This is what is meant by validation. 
+
+If \texttt{GridSearchCV} is used to optimize parameters in our model, and we test those parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
+
+Each combination of parameters is evaluated against this evaluation set. A method of doing this is called \textbf{cross validation}, i.e., a process of testing out parameter optimization on a data sample that is independent of both the testing and training data.
+
+In the case of \textbf{K-fold CV} the data set is divided into $k$ subsets, and the holdout method is repeated $k$ times. Each time, one of the $k$ subsets is used as the test set and the other $k-1$ subsets are put together to form a training set. Then the average error across all $k$ trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set $k-1$ times. Once the parameters are optimally tuned, one can test the efficacy of the final model on the test set. 
+
+In our case with a small-\emph{highly}-skewed data, K-fold cross validation is especially useful when used in conjunction with \texttt{GridSearchCV}. We know that the final parameters that result from the process are those that accurately optimize the performance metric. 
+
+To validate our model, we used sklearn's \texttt{StratifiedShuffleSplit} using \{k=1000\}. In sklearn, this algorithm merges together a shuffle split and cross validation, returning stratified randomized folds.
+
+We trained our four models on the reduced features we found through trial and error and recorded their performance. 
+
+
+\section*{Model Evaluation}
+
+To evaluate the performance of our algorithms, we used the following metrics:
+\begin{enumerate}
+\item Precision 
+\item Recall 
+\item $F_1$ score
+\end{enumerate}
+
+From our trials we recorded the scores for each of our metrics as can be seen in table \ref{tableReducedFeatures}. 
+
+The LogisticRegression had the highest precision score. With regards to this dataset, it means that whenever a POI gets flagged in the test set, we know with a lot of confidence that it's very likely to be a real POI and not a false alarm. On the other hand, it had a low recall score, which means that sometimes it misses real POIs.  
+
+While the XGBClassifier did not have the highest precision score, it had the highest recall score. This means that nearly every time a POI is in the test set, we are able to classify them. 
+
+Furthermore, the XGBClassifier had the best $F_1$ score. For this problem, this is the best we can do. Both the false positive and false negative rates are relatively low, which means that the model can identify POI's reliably and accurately. As a result the \textbf{XGBClassifier} was the most apt model for this problem.
+
+
 
 \setlength{\extrarowheight}{1.5pt}
 \begin{table}[!htbp]
@@ -632,7 +666,7 @@ XGBClassifier           &  0.617  & 0.331  & 0.431\\
 \hline
 \end{tabular}
 \label{tableReducedFeatures}
-\end{table}
+\end{table} 
 
 %----------------------------------------------------------------------------------------
 %  CHAPTER 
