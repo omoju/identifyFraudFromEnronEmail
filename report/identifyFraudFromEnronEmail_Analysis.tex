@@ -286,7 +286,7 @@ For this dataset all features except the \texttt{`poi'} had several \textit{miss
     \includegraphics[width=0.6\textwidth]{figures/salary}
     \label{salary}}
     
-    \caption{\textbf{Plot of Enron employee salaries.}\textit{ From this visualization, we can see there is a huge spike to the right of data-point 60, this spike corresponds with an outlier of value \$26,704,229.00.}}
+    \caption{\textbf{Plot of Enron employee salaries.}\textit{ From this visualization, we can see there is a huge spike to the right of data-point 100, this spike corresponds with an outlier of value \$26,704,229.00.}}
 \end{figure}
 
 \begin{figure}[!hbtp]
@@ -360,7 +360,7 @@ To zoom in on the compensation, we focused on three features `bonus,', `exercise
 
 Another interesting character that showed up in the financial data was ``Pai Lou.'' From table \ref{tableSubsetEmployeeData}, one can see that he had some of the largest exercised stock options. Apart from the past CEOs and chairmen, he was \emph{the} employee that sold the most Enron stock. He also got some of the largest shares of restricted stock. Its interesting that these men aren't on the POI list in table \ref{tablePoi}. I firmly believe they are probably on the co-conspirators unindicted list.
 
-To gain insights into the relationship between salary and exercised stock options, we took that subset of data and ran a KMeans clustering algorithm on it to see how the data clustered; we focused on three clustered as can be seen from figure \ref{salaryExercisedStock}. The clusters generated matched our intuition about the executives, mostly all the five executives with the highest exercised stock options were clustered as one, as can be seen in the visualization in figure \ref{salaryExercisedStock} by the markers colored red-pink. It is important to note we were not able to infer a relationship between salary and exercised stock options as we had thought. 
+To gain insights into the relationship between salary and exercised stock options, we took that subset of data and ran a KMeans clustering algorithm on it to see how the data clustered; we focused on three clustered as can be seen from figure \ref{salaryExercisedStock}. The clusters generated matched our intuition about the executives, mostly all the five executives with the highest exercised stock options were clustered as one, as can be seen in the visualization in figure \ref{salaryExercisedStock} by the markers colored blue. It is important to note we were not able to infer a relationship between salary and exercised stock options as we had thought. 
 
 We proceeded on, with a hypothesis that more than likely, the executives with the highest salaries, probably also had the highest restricted stock. Just as with exercised stock options, it wasn't the case. From figure \ref{salaryRestrictedStock} one can see that there is a data-point with a salary close to \$200,000, but with over 8 million shares, when most of the other folks around that salary bracket had less than a million shares. Its important to note that for both our visualizations, the KMeans clustering algorithm, clustered the data-points along both the exercised stock options and restricted stocks. 
 \begin{figure}[!hbtp]
@@ -430,7 +430,7 @@ We suspected that there was interdependence of features so we engineered a featu
 \section*{Feature Selection}
 Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. In the case of the latter we selected a RandomForest classifier as well as a Gradient Boosted Trees---XGBoost---classifier to implement feature selection.
 
-For the RandomForest algorithm, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' to obtain a score on the strength of that feature. To obtain reliable scores, we ran the algorithm a 1000x and averaged the scores of the features to obtain the top $n$ features as visualized in figure \ref{randomForestFeatureImportance}.
+For the RandomForest algorithm, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' function to obtain a score on the strength of that feature. To obtain reliable scores, we ran the algorithm a 1000x and averaged the scores of the features to obtain the top $n$ features as visualized in figure \ref{randomForestFeatureImportance}.
 
 \begin{figure}[!hbtp]
 \centering
@@ -527,9 +527,7 @@ salary
 
 \section*{Implementation}
 
-We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using 10 fold cross validation to get an accuracy score. These scores proved to be misleading. 
-
-Instead, we went ahead and used a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
+We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
 
 
 \section*{Refinement}
@@ -553,7 +551,7 @@ There are several approaches to \emph{tuning} these parameters, most of them can
 
 
 
-Once we settled on the features we would be using for our classification task, we tuned our model using sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit}function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
+Once we settled on the features we would be using for our classification task, we tuned our model using sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit} function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
 
 \begin{itemize}
 \item Parameters for Tree Booster
@@ -585,7 +583,7 @@ Once we settled on the features we would be using for our classification task, w
     \end{itemize} 
 \end{itemize}
 
-Once we performed our search through the parameter space to find the combination of parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
+Once we performed our search through the hyper-parameter space to find the combination of hyper-parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
 \begin{verbatim}
 XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
        gamma=0, learning_rate=0.02, max_delta_step=1, max_depth=3,
@@ -600,19 +598,17 @@ XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
 
 \textbf{Question} Discuss validation and its importance.
 
-\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over fitting, we hold out a piece of the data and use it as a \textbf{test} set. This is what is meant by validation. 
+\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over-fitting, we hold out a piece of the data and use it as a \textbf{test} set. This is what is meant by validation. 
 
-If \texttt{GridSearchCV} is used to optimize parameters in our model, and we test those parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
+If \texttt{GridSearchCV} is used to optimize hyper-parameters in our model, and we test those hyper-parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
 
-Each combination of parameters is evaluated against this evaluation set. A method of doing this is called \textbf{cross validation}, i.e., a process of testing out parameter optimization on a data sample that is independent of both the testing and training data.
+Each combination of parameters is evaluated against this evaluation set. A method of doing this is called \textbf{cross validation}, i.e., a process of testing out hyper-parameter optimization on a data sample that is independent of both the testing and training data.
 
-In the case of \textbf{K-fold CV} the data set is divided into $k$ subsets, and the holdout method is repeated $k$ times. Each time, one of the $k$ subsets is used as the test set and the other $k-1$ subsets are put together to form a training set. Then the average error across all $k$ trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set $k-1$ times. Once the parameters are optimally tuned, one can test the efficacy of the final model on the test set. 
+In the case of \textbf{K-fold CV} the data set is divided into $k$ subsets, and the holdout method is repeated $k$ times. Each time, one of the $k$ subsets is used as the test set and the other $k-1$ subsets are put together to form a training set. Then the average error across all $k$ trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set $k-1$ times. Once the hyper-parameters are optimally tuned, one can test the efficacy of the final model on the test set. 
 
-In our case with a small-\emph{highly}-skewed data, K-fold cross validation is especially useful when used in conjunction with \texttt{GridSearchCV}. We know that the final parameters that result from the process are those that accurately optimize the performance metric. 
+In our case with a small-\emph{highly}-skewed dataset, K-fold cross validation is especially useful when used in conjunction with \texttt{GridSearchCV}. We know that the final parameters that result from the process are those that accurately optimize the performance metric. 
 
-To validate our model, we used sklearn's \texttt{StratifiedShuffleSplit} using \{k=1000\}. In sklearn, this algorithm merges together a shuffle split and cross validation, returning stratified randomized folds.
-
-We trained our four models on the reduced features we found through trial and error and recorded their performance. 
+To validate our model, we used sklearn's \texttt{StratifiedShuffleSplit} using \{k=1000\}. We trained our four models on the reduced features we found through trial and error and recorded their performance. 
 
 
 \section*{Model Evaluation}
@@ -674,24 +670,26 @@ XGBClassifier           &  0.617  & 0.331  & 0.431\\
 
 \section*{Reflection}
 
-We have presented a solution to identifying ``persons of interest'' who \textit{might} have played a significant role in perpetuating fraud at Enron from their finance and email data. We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
+We have presented a solution to identifying ``persons of interest'' who \textit{might} have played a significant role in perpetuating fraud at Enron from their finance and email data. 
 
-The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm to use. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, a combination of both the ``precision'' and ``recall'' as realized in the ``$F_1$'' score was the more apt choice.
+We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
+
+The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, a combination of both the ``precision'' and ``recall'' as realized in the ``$F_1$'' score was the more apt choice.
 
 From our analysis we discovered some outliers and removed them from the dataset. We took a close look at ``exercised stock options'' and ``restricted stocks'' to see how the senior executives were compensated. Based on our working hypothesis that if fraud was indeed been fomented at Enron, then more than likely the vehicle that the senior officers would take to get the money out would be through an inflated allocation of shares. 
 
 We selected three ensemble learners (Random Forest, Extra Trees, eXtreme Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. We selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since we didn't have existing benchmarks we could use to reason about the effectiveness of our approach, we resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
 
-We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the eXtreme Boosted Trees classifier as the learner to use. We reduced our feature space and tuned our classifier to achieve a this final score, \{$F_1$: 0.431, precision: 0.617, recall: 0.331\}.
+We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the eXtreme Boosted Trees classifier as the learner to use. We reduced our feature space and tuned our classifier to achieve this final score, \{$F_1$: 0.431, precision: 0.617, recall: 0.331\}.
 
 \section*{Improvement}
 One of the more interesting aspect of this project was the selected features that were used for the final classifier; all those features came from the financial data. When we took away the feature that we engineered from the email data as well as other features from the email data, we got an increase in performance. 
 
 We believe we could get more additive data from the Enron emails by performing some natural language understanding techniques and then adding those features to the dataset.
 
-With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for four parameters for our eXtreme Gradient Boosted trees. That algorithm has many more parameters that could yield a stronger model.
+With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for four hyper-parameters for our eXtreme Gradient Boosted trees. That algorithm has many more hyper-parameters that could yield a stronger model.
 
-If time was not a factor, we could create a pipeline that used Grid Search to go through a combination of features while optimizing the XGBoost algorithm for its own parameters. We could do an exhaustive search of this feature + parameters space to obtain a model that would be most optimal for describing this data.
+If time was not a factor, we could create a pipeline that used Grid Search to go through a combination of features while optimizing the XGBoost algorithm for its own hyper-parameters. We could do an exhaustive search of this feature + hyper-parameters space to obtain a model that would be most optimal for describing this data.
 
 
 
