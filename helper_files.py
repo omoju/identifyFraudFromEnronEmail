@@ -21,6 +21,14 @@ for i in range(len(tableau20)):
     tableau20[i] = (r / 255., g / 255., b / 255.)
         
 def makeData(dataset, feature_list, folds = 1000):
+    """Make and return dataset prepared for training.
+
+    Keyword arguments:
+    dataset --- dict of dict
+    feature_list --- list of strings
+    folds --- int
+    
+    """
     data = featureFormat(dataset, feature_list, sort_keys = True)
     labels, features = targetFeatureSplit(data)
     cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
@@ -42,7 +50,15 @@ def makeData(dataset, feature_list, folds = 1000):
     return features_train, features_test, labels_train, labels_test
 
 def getImportantFeatures(rf, data_dict, n=1, topNFeatures=5):
+    """Return topNFeatures as found by a Random Forest Classifier.
+
+    Keyword arguments:
+    rf --- Random Forest Classifier
+    dataset --- dict of dict
+    n --- int
+    topNFeatures --- int
     
+    """
     import operator
     featuresSortedByScore = list()
     
@@ -86,7 +102,7 @@ def printDataTableAtThreshold(feature1, feature2, the_data_dict, threshold, prtL
     Keyword arguments:
     feature1 --- string
     feature2 --- sring
-    the_data_dict --- dict
+    the_data_dict --- dict of dict
     threshold --- int
     prtLaTex --- int
     
@@ -140,6 +156,15 @@ def printClassifierOutputTable(results, prntLatex):
         
                  
 def validateClf(clf, dataset, feature_list, folds = 1000):
+    """Validate classifier and return dict with the results.
+
+    Keyword arguments:
+    clf --- Classifier
+    dataset --- dict of dict
+    feature_list --- list of strings
+    folds --- int
+    
+    """
     data = featureFormat(dataset, feature_list, sort_keys = True)
     labels, features = targetFeatureSplit(data)
     cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
@@ -199,8 +224,9 @@ def compareTwoFeatures(feature1, feature2, df):
     Compare two features in a scatter plot and returns the datapoints
    
     Keyword arguments:
-    feature1 -- a pandas dataframe col 
-    feature2 -- a pandas dataframe col
+    feature1 -- string 
+    feature2 -- string
+    df --- pandas dataframe
    
     """
   
@@ -216,16 +242,11 @@ def computeFraction( poi_messages, all_messages ):
         return the fraction of messages to/from that person
         that are from/to a POI
         
+        Keyword arguments:
+        poi_messages -- string 
+        all_messages -- string
+        
    """
-    ### you fill in this code, so that it returns either
-    ###     the fraction of all messages to this person that come from POIs
-    ###     or
-    ###     the fraction of all messages from this person that are sent to POIs
-    ### the same code can be used to compute either quantity
-
-    ### beware of "NaN" when there is no known email address (and so
-    ### no filled email features), and integer division!
-    ### in case of poi_messages or all_messages having "NaN" value, return 0.
     
     fraction = 0
     
@@ -243,6 +264,7 @@ def findPersonBasedOnTwoFeatures(feature1, feature2, the_data_dict, treshold=1):
     Keyword arguments:
     feature1 -- a string representing a data feature like 'salary'
     feature2 -- a string representing a data feature like 'salary'
+    the_data_dict --- dict of dict
     treshold -- an int
    
     """
