@@ -54,7 +54,7 @@ def getImportantFeatures(rf, data_dict, n=1, topNFeatures=5):
 
     Keyword arguments:
     rf --- Random Forest Classifier
-    dataset --- dict of dict
+    data_dict --- dict of dict
     n --- int
     topNFeatures --- int
     
