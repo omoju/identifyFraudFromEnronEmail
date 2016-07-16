@@ -20,6 +20,66 @@ for i in range(len(tableau20)):
     r, g, b = tableau20[i]    
     tableau20[i] = (r / 255., g / 255., b / 255.)
         
+def makeData(dataset, feature_list, folds = 1000):
+    data = featureFormat(dataset, feature_list, sort_keys = True)
+    labels, features = targetFeatureSplit(data)
+    cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
+    
+    features_train = []
+    features_test  = []
+    labels_train   = []
+    labels_test    = []
+    
+    for train_idx, test_idx in cv: 
+        
+        for ii in train_idx:
+            features_train.append( features[ii] )
+            labels_train.append( labels[ii] )
+        for jj in test_idx:
+            features_test.append( features[jj] )
+            labels_test.append( labels[jj] )
+        
+    return features_train, features_test, labels_train, labels_test
+
+def getImportantFeatures(rf, data_dict, n=1, topNFeatures=5):
+    
+    import operator
+    featuresSortedByScore = list()
+    
+    feature_list = ['poi', 'salary', 'deferral_payments', 'total_payments', 'loan_advances', 
+                'bonus', 'restricted_stock_deferred', 'deferred_income', 
+                'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 
+                'long_term_incentive', 
+                'restricted_stock', 'director_fees',
+                'to_messages','from_poi_to_this_person', 'from_messages', 
+                'from_this_person_to_poi', 'shared_receipt_with_poi'
+               ]
+
+    names = ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 
+        'restricted_stock_deferred', 'deferred_income', 'total_stock_value', 'expenses', 
+        'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 
+         'director_fees','to_messages', 'from_poi_to_this_person', 'from_messages', 
+                'from_this_person_to_poi', 'shared_receipt_with_poi']
+    
+    data = featureFormat(data_dict, feature_list, sort_keys = True)
+    labels, features = targetFeatureSplit(data)
+
+    for i in range(n):
+        rf.fit(features, labels)
+        featuresSortedByScore.append(sorted(zip(map(lambda x: round(x, 4), rf.feature_importances_), names), 
+             reverse=True))
+
+    myTopFeature = {}
+    for i in range (len(featuresSortedByScore)):
+        for j in range (topNFeatures):
+            if featuresSortedByScore[i][j][1] not in myTopFeature.keys():
+                myTopFeature[featuresSortedByScore[i][j][1]] = 1
+            else:
+                myTopFeature[featuresSortedByScore[i][j][1]] += 1
+
+
+    return sorted(myTopFeature.items(), key=operator.itemgetter(1), reverse=True)[:topNFeatures]
+
 def printDataTableAtThreshold(feature1, feature2, the_data_dict, threshold, prtLaTex):
     """Print output table for feature values > threshold.
 

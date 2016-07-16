@@ -356,9 +356,9 @@ One of the areas we concentrated on was that of compensation. We were very inter
   \end{center}
 \end{table}
 
-To zoom in on the compensation, we focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{tableSubsetEmployeeData} shows some financial data for some of the highest compensated employees. It comes as no surprise that we see that the sitting CEO at the time of the collapsce, Ken Lay, had the second highest bonus paid, that wasn't surprising. What was surprising was the name ``John Lavorato.'' He was the employee that got the highest bonus. So who was John Lavorato? He was the former head of Enron's trading operations. 
+To zoom in on the compensation, we focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{tableSubsetEmployeeData} shows some financial data for some of the highest compensated employees. It comes as no surprise that we see that the sitting CEO at the time of the collapse, Ken Lay, had the second highest bonus paid, that wasn't surprising. What was surprising was the name ``John Lavorato.'' He was the employee that got the highest bonus. So who was John Lavorato? He was the former head of Enron's trading operations. 
 
-Another interesting character that showed up in the financial data was ``Pai Lou.'' From table \ref{tableSubsetEmployeeData}, one can see that he had some of the largest exercised stock options. Apart from the past CEOs and chairmen, he was \textit{the} employee that sold the most Enron stock. He also got some of the largest shares of restricted stock. Its interesting that these men aren't on the POI list in table \ref{tablePoi}. I firmly believe they are probably on the co-conspirators unindicted list.
+Another interesting character that showed up in the financial data was ``Pai Lou.'' From table \ref{tableSubsetEmployeeData}, one can see that he had some of the largest exercised stock options. Apart from the past CEOs and chairmen, he was \emph{the} employee that sold the most Enron stock. He also got some of the largest shares of restricted stock. Its interesting that these men aren't on the POI list in table \ref{tablePoi}. I firmly believe they are probably on the co-conspirators unindicted list.
 
 To gain insights into the relationship between salary and exercised stock options, we took that subset of data and ran a KMeans clustering algorithm on it to see how the data clustered; we focused on three clustered as can be seen from figure \ref{salaryExercisedStock}. The clusters generated matched our intuition about the executives, mostly all the five executives with the highest exercised stock options were clustered as one, as can be seen in the visualization in figure \ref{salaryExercisedStock} by the markers colored red-pink. It is important to note we were not able to infer a relationship between salary and exercised stock options as we had thought. 
 
@@ -390,20 +390,18 @@ We proceeded on, with a hypothesis that more than likely, the executives with th
 \clearpage
 \section*{Algorithms and Techniques}
 
-For the problem of identifying fraud from the Enron financial and email data, we experimented with four different classifiers, three ensemble methods and on regression:
+For the problem of identifying fraud from the Enron financial and email data, we experimented with four different classifiers, three ensemble methods and a regression:
 \begin{enumerate}% 
 \item A RandomForestClassifier\\
 We selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning. 
 \item An ExtraTreesClassifier\\
- Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtrRandTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
-\item An eXtreme Gradient Boosted (XGBoost) Classifier\\
-XGBoost is an advanced implementation of gradient boosting algorithm. From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions 3 published at Kaggle's
-blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we want to see if using this classifier could give us good results with our dataset.
+ Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtraTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
+\item An eXtreme Gradient Boosted (XGBoost) Trees Classifier\\
+XGBoost is an advanced implementation of gradient boosting algorithm. From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions published at Kaggle's
+blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we also wanted to see if using this classifier could give us good results with our dataset.
 
 \item A LogisticRegression (Robust, with $Lp$ = $L1$) Classifier\\
-Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class.
-
-We selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleansed of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
+Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class. Another reason we selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleansed of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
 
 \end{enumerate}
 
@@ -420,7 +418,9 @@ For this specific problem, we were unable to acquire benchmarks that we could te
 \chapter*{Identify Fraud From Enron Data: Methodology}
 
 \section*{Data Preprocessing}
-Significant data preprocessing wasn't necessary for this problem. Once we cleared our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. We tested out our four learners with \texttt{salary} and \texttt{bonus} features before we scaled them with a minimax-scaler afterwards. We found no difference, so we decided to forgo scaling.
+Significant data preprocessing wasn't necessary for this problem. Once we cleared our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. 
+
+We tested out our four learners with \texttt{salary} and \texttt{bonus} features before we scaled them with a minimax-scaler afterwards. We found no difference, so we decided to forgo scaling.
 
 We dropped the feature named \texttt{email\_address} from our dataset because it contained a string, while other features where numeric. Furthermore, we felt that this feature was superfluous with respect to the task. 
 
