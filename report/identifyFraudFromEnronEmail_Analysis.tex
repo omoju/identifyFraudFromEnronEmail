@@ -1,5 +1,5 @@
-\documentclass[twoside,openright,titlepage,numbers=noenddot,headinclude,%
-               footinclude=true,cleardoublepage=empty,abstractoff,BCOR=5mm,%
+\documentclass[titlepage,numbers=noenddot,headinclude,%
+               footinclude=true,abstractoff,BCOR=5mm,%
                paper=a4,fontsize=11pt,ngerman,american]{scrreprt}
 
 % Custom config ===============================================================
@@ -86,14 +86,9 @@
 \pagestyle{plain}
 
 % Front pages =================================================================
-
-\include{titlepage}
-
 % Content =====================================================================
 
 \pagenumbering{arabic}
-
-\cleardoublepage
 
 
 \chapter*{Identify Fraud From Enron Data: Introduction}
@@ -105,19 +100,19 @@
 
 \section*{Project Overview}
 
-In early 2000s, the Enron corporation of Houston, Texas was considered one of the most profitable energy companies in the United States. Fortune magazine named Enron one of the most innovative companies in the US for six years in a row, 1996 - 2001. However, by late 2001, the Enron corporation filed for bankruptcy after it was revealed that the company overstated its profits and defrauded it share holders of a considerable amount of wealth. Several person were later indicted and convicted of fraud in the Enron case. 
+In early 2000s, the Enron corporation of Houston, Texas was considered one of the most profitable energy companies in the United States. Fortune magazine named Enron one of the most innovative companies in the US for six years in a row, 1996 - 2001. However, by late 2001, the Enron corporation filed for bankruptcy after it was revealed that the company overstated its profits and defrauded it share holders of a considerable amount of wealth. Several person were later indicted and convicted of fraud in the Enron case.
 
 The goal of this project is to use applied machine learning, based on released Enron data---Enron emails and financial accounts---to identify persons of interest in the Enron debacle.
 
 
 \section*{Problem Statement}
 
-The problem that we are interested in solving is building an algorithm that can help us identify persons who might be of interest with regards to fraud at Enron. These persons are predominantly Enron employees and consultants who worked for the corporation. 
+The problem that I am interested in solving is building an algorithm that can help us identify persons who might be of interest with regards to fraud at Enron. These persons are predominantly Enron employees and consultants who worked for the corporation.
 
-The dataset that we have available for this task was collected over two weeks in 2002 by the Federal Energy Regulatory Commission (FERC) during its investigation into the case. The dataset contains over 600,000 emails of 158 high-level Enron employees as well as the financial records of stock payments, salary and so forth of those employees.
+The dataset that I have available for this task was collected over two weeks in 2002 by the Federal Energy Regulatory Commission (FERC) during its investigation into the case. The dataset contains over 600,000 emails of 158 high-level Enron employees as well as the financial records of stock payments, salary and so forth of those employees.
 
-To identify persons of interest that might have been party to fraud at Enron we suggest the following strategy:
-\begin{enumerate}% 
+To identify persons of interest that might have been party to fraud at Enron I suggest the following strategy:
+\begin{enumerate}%
 \item Explore the dataset to ensure its integrity and understand the context.
 \item Identify features that may be used. If possible, engineer features that might provide greater discrimination.
 \item With the understanding that this a ``classification'' task, explore a couple of classifiers that might be well suited for the problem at hand.
@@ -128,32 +123,32 @@ To identify persons of interest that might have been party to fraud at Enron we 
 
 \section*{Metrics}
 
-The Enron dataset while it contains a robust amount of emails, contains data for only about 150 people. An interesting aspect of the Enron data is that the class labels for our classification is heavily unbalanced at a ratio of around 7:1 in favor of negative examples as can be seen in figure \ref{poi}. 
+The Enron dataset while it contains a robust amount of emails, contains data for only about 150 people. An interesting aspect of the Enron data is that the class labels for our classification is heavily unbalanced at a ratio of around 7:1 in favor of negative examples as can be seen in figure \ref{poi}.
 
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
     \includegraphics[width=1\textwidth]{figures/poi}
     \label{poi}}
-    
+
     \caption{\textbf{Person of Interest plot. }\textit{The histogram shows an unbalanced target dataset with approximately 128 values of \{0: NOT POI\} and 18 values of \{1: POI\}.}}
 \end{figure}
 
 
-For this reason, using ``Accuracy'' as a performance metric leads to misleading information. A more apt measure of the performance of a learner should take into account the results of a confusion matrix and  calculate ``precision,'' ``recall,'' and ``$F_1$'' scores. 
+For this reason, using ``Accuracy'' as a performance metric leads to misleading information. A more apt measure of the performance of a learner should take into account the results of a confusion matrix and  calculate ``precision,'' ``recall,'' and ``$F_1$'' scores.
 
-For the task of identifying persons who may be involved with fraud at Enron, we will be using the $F_1$ score, i.e., the weighted average of precision and recall as our metric of choice.
+For the task of identifying persons who may be involved with fraud at Enron, I will be using the $F_1$ score, i.e., the weighted average of precision and recall as our metric of choice.
 
 
 %----------------------------------------------------------------------------------------
-%  CHAPTER 
+%  CHAPTER
 %----------------------------------------------------------------------------------------
 
 \chapter*{Identify Fraud From Enron Data: Analysis}
 
 \section*{Data Exploration}
 
-The Enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. For example the dictionary belows shows the corresponding key-value data point of Enron executive Pai Lou, the only executive to reap and keep substantial wealth from Enron. 
+The Enron dataset used in the project was created by the Udacity team. It was done by combining the Enron email and financial data. The data is stored in a python dictionary where each key-value pair in the dictionary corresponds to one person. For example the dictionary belows shows the corresponding key-value data point of Enron executive Pai Lou, the only executive to reap and keep substantial wealth from Enron.
 
 \begin{verbatim}
 data_dict['PAI LOU L']
@@ -193,28 +188,28 @@ data_dict['PAI LOU L']
 \begin{table}[!htbp]
   \begin{center}
   \caption{Persons of interest in the dataset.}
-    \begin{tabular}{ l } 
-    PERSONS OF INTEREST                \\ 
+    \begin{tabular}{ l }
+    PERSONS OF INTEREST                \\
 
     \hline
-    BELDEN TIMOTHY N    \\ 
-    BOWEN JR RAYMOND M  \\ 
-    CALGER CHRISTOPHER F\\ 
-    CAUSEY RICHARD A    \\ 
-    COLWELL WESLEY      \\ 
-    DELAINEY DAVID W    \\ 
-    FASTOW ANDREW S     \\ 
-    GLISAN JR BEN F     \\ 
-    HANNON KEVIN P      \\ 
-    HIRKO JOSEPH        \\ 
-    KOENIG MARK E       \\ 
-    KOPPER MICHAEL J    \\ 
-    LAY KENNETH L       \\ 
-    RICE KENNETH D      \\ 
-    RIEKER PAULA H      \\ 
-    SHELBY REX          \\ 
-    SKILLING JEFFREY K  \\ 
-    YEAGER F SCOTT      \\ 
+    BELDEN TIMOTHY N    \\
+    BOWEN JR RAYMOND M  \\
+    CALGER CHRISTOPHER F\\
+    CAUSEY RICHARD A    \\
+    COLWELL WESLEY      \\
+    DELAINEY DAVID W    \\
+    FASTOW ANDREW S     \\
+    GLISAN JR BEN F     \\
+    HANNON KEVIN P      \\
+    HIRKO JOSEPH        \\
+    KOENIG MARK E       \\
+    KOPPER MICHAEL J    \\
+    LAY KENNETH L       \\
+    RICE KENNETH D      \\
+    RIEKER PAULA H      \\
+    SHELBY REX          \\
+    SKILLING JEFFREY K  \\
+    YEAGER F SCOTT      \\
     \end{tabular}
     \label{tablePoi}
   \end{center}
@@ -226,14 +221,14 @@ Table \ref{tablePoi} shows a list of persons of interest that were generated by 
     \item Total number of POI: 18
     \item Total number of Non POI: 128
     \item Number of features used: 20
-\end{itemize} 
-For this dataset all features except the \texttt{`poi'} had several \textit{missing} values. From table \ref{tableFeatureMissing}, we can see that several features have more than 40+\% of their data-point values missing. In order to deal with this issue, we decided to set all missing values to `0'. 
+\end{itemize}
+For this dataset all features except the \texttt{`poi'} had several \textit{missing} values. From table \ref{tableFeatureMissing}, I can see that several features have more than 40+\% of their data-point values missing. In order to deal with this issue, I decided to set all missing values to `0'.
 
 
 \begin{table}[!htbp]
   \begin{center}
   \caption{A list of features with percentage missing values.}
-    \begin{tabular}{ |p{5cm}|p{3cm}| } 
+    \begin{tabular}{ |p{5cm}|p{3cm}| }
     \hline
     Feature Name &  \% of \textbf{Missing} Values\\[1ex]
 
@@ -269,7 +264,7 @@ For this dataset all features except the \texttt{`poi'} had several \textit{miss
     \subfloat[]{%
     \includegraphics[width=1\textwidth]{figures/featuresByPercentageMissingValues}
     \label{featuresByPercentageMissingValues}}
-    
+
     \caption{\textbf{Features Mapped By Percentage Missing Values. }\textit{The image shows several features with more than 40+\% of their data-point values missing.}}
 \end{figure}
 
@@ -278,15 +273,15 @@ For this dataset all features except the \texttt{`poi'} had several \textit{miss
 \clearpage
 
 \section*{Outlier detection}
- As part of the data exploration process, we were careful to analyze the data for potential outliers. One of the first task we did was visualize the salary of Enron executives \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. We found a data-point that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}. 
+ As part of the data exploration process, I was careful to analyze the data for potential outliers. One of the first task I did was visualize the salary of Enron executives \ref{salary}. From that visualization, it was clear that there was an outlier in the dataset. I found a data-point that was completely outside of a reasonable range as can be seen from figures \ref{salary} and \ref{SalaryBonus}.
 
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/salary}
     \label{salary}}
-    
-    \caption{\textbf{Plot of Enron employee salaries.}\textit{ From this visualization, we can see there is a huge spike to the right of data-point 100, this spike corresponds with an outlier of value \$26,704,229.00.}}
+
+    \caption{\textbf{Plot of Enron employee salaries.}\textit{ From this visualization, I can see there is a huge spike to the right of data-point 100, this spike corresponds with an outlier of value \$26,704,229.00.}}
 \end{figure}
 
 \begin{figure}[!hbtp]
@@ -297,8 +292,8 @@ For this dataset all features except the \texttt{`poi'} had several \textit{miss
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/salary_v_bonus2}
     \label{SalaryBonus2}}
-    
-    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot we were able to clearly detect the existence of an outlier. In addition, once the data had been cleansed of outliers, we can see that majority of data-points cluster in a close range, with a few data-points spread outside bonus range of \$2 million. From descriptive statistics, we learned that the 75-percentile of bonus amount was \$1 million. }}
+
+    \caption{\textbf{TOTAL insertion.} \textit{Figure (a) Bonus versus salary with outlier present. Figure (b) Same dataset but without the outlier. By visualizing these two features in a scatter plot I was able to clearly detect the existence of an outlier. In addition, once the data had been cleansed of outliers, I can see that majority of data-points cluster in a close range, with a few data-points spread outside bonus range of \$2 million. From descriptive statistics, I learned that the 75-percentile of bonus amount was \$1 million. }}
 \end{figure}
 
 
@@ -309,60 +304,60 @@ For this dataset all features except the \texttt{`poi'} had several \textit{miss
 
 \section*{Exploratory Visualization}
 
-One of the areas we concentrated on was that of compensation. We were very interested in the compensation packages as represented in the financial data of the executives. We moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through paid bonuses and stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project. 
+One of the areas I concentrated on was that of compensation. I was very interested in the compensation packages as represented in the financial data of the executives. I moved ahead with a working hypothesis, that if fraud was indeed occurring at Enron, then more than likely, the money was probably going to be funneled out through paid bonuses and stocks. A more rigorous hypothesis would then correlate stock options granted and exercised by the Enron executives with the sales of the shares on the open market. However, such an investigation, is outside the scope of this project.
 
 \begin{table}[!htbp]
   \begin{center}
   \caption{Financial data on some of Enron's top paid employees.}
-    \begin{tabular}{ |l|l|l| } 
+    \begin{tabular}{ |l|l|l| }
     \hline
-    NAME                &  SALARY        &  BONUS       \\ 
+    NAME                &  SALARY        &  BONUS       \\
 
     \hline
-    ALLEN PHILLIP K     &  \$201,955.00    &     4,175,000\\ 
-    BELDEN TIMOTHY N    &  \$213,999.00    &     5,249,999\\ 
-    SKILLING JEFFREY K  &  \$1,111,258.00  &     5,600,000\\ 
-    LAY KENNETH L       &  \$1,072,321.00  &     7,000,000\\ 
-    \hilight{LAVORATO JOHN J}     &  \$339,288.00    &     8,000,000\\ 
+    ALLEN PHILLIP K     &  \$201,955.00    &     4,175,000\\
+    BELDEN TIMOTHY N    &  \$213,999.00    &     5,249,999\\
+    SKILLING JEFFREY K  &  \$1,111,258.00  &     5,600,000\\
+    LAY KENNETH L       &  \$1,072,321.00  &     7,000,000\\
+    \hilight{LAVORATO JOHN J}     &  \$339,288.00    &     8,000,000\\
     \hline
     \multicolumn{3}{|c|}{}\\
     \hline
     NAME                &  SALARY        &  EXERCISED STOCK OPTIONS \\
 
     \hline
-    FREVERT MARK A      &  \$1,060,932.00  &    10,433,518\\ 
-    \hilight{PAI LOU L}           &  \$261,879.00    &    15,364,167\\ 
-    SKILLING JEFFREY K  &  \$1,111,258.00  &    19,250,000\\ 
-    RICE KENNETH D      &  \$420,636.00    &    19,794,175\\ 
-    LAY KENNETH L       &  \$1,072,321.00  &    34,348,384\\ 
+    FREVERT MARK A      &  \$1,060,932.00  &    10,433,518\\
+    \hilight{PAI LOU L}           &  \$261,879.00    &    15,364,167\\
+    SKILLING JEFFREY K  &  \$1,111,258.00  &    19,250,000\\
+    RICE KENNETH D      &  \$420,636.00    &    19,794,175\\
+    LAY KENNETH L       &  \$1,072,321.00  &    34,348,384\\
     \hline
     \multicolumn{3}{|c|}{}\\
     \hline
-    NAME                &  SALARY        &  RESTRICTED STOCK\\ 
+    NAME                &  SALARY        &  RESTRICTED STOCK\\
 
     \hline
-    YEAGER F SCOTT      &  \$158,403.00    &     3,576,206\\ 
-    IZZO LAWRENCE L     &  \$85,274.00     &     3,654,808\\ 
-    BAXTER JOHN C       &  \$267,102.00    &     3,942,714\\ 
-    KEAN STEVEN J       &  \$404,338.00    &     4,131,594\\ 
-    FREVERT MARK A      &  \$1,060,932.00  &     4,188,667\\ 
-    SKILLING JEFFREY K  &  \$1,111,258.00  &     6,843,672\\ 
-    \hilight{PAI LOU L}          &  \$261,879.00    &     8,453,763\\ 
-    WHITE JR THOMAS E   &  \$317,543.00    &    13,847,074\\ 
-    LAY KENNETH L       &  \$1,072,321.00  &    14,761,694\\ 
+    YEAGER F SCOTT      &  \$158,403.00    &     3,576,206\\
+    IZZO LAWRENCE L     &  \$85,274.00     &     3,654,808\\
+    BAXTER JOHN C       &  \$267,102.00    &     3,942,714\\
+    KEAN STEVEN J       &  \$404,338.00    &     4,131,594\\
+    FREVERT MARK A      &  \$1,060,932.00  &     4,188,667\\
+    SKILLING JEFFREY K  &  \$1,111,258.00  &     6,843,672\\
+    \hilight{PAI LOU L}          &  \$261,879.00    &     8,453,763\\
+    WHITE JR THOMAS E   &  \$317,543.00    &    13,847,074\\
+    LAY KENNETH L       &  \$1,072,321.00  &    14,761,694\\
     \hline
     \end{tabular}
     \label{tableSubsetEmployeeData}
   \end{center}
 \end{table}
 
-To zoom in on the compensation, we focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{tableSubsetEmployeeData} shows some financial data for some of the highest compensated employees. It comes as no surprise that we see that the sitting CEO at the time of the collapse, Ken Lay, had the second highest bonus paid, that wasn't surprising. What was surprising was the name ``John Lavorato.'' He was the employee that got the highest bonus. So who was John Lavorato? He was the former head of Enron's trading operations. 
+To zoom in on the compensation, I focused on three features `bonus,', `exercised\_stock\_options' and `restricted\_stock'. Table \ref{tableSubsetEmployeeData} shows some financial data for some of the highest compensated employees. It comes as no surprise that I see that the sitting CEO at the time of the collapse, Ken Lay, had the second highest bonus paid, that wasn't surprising. What was surprising was the name ``John Lavorato.'' He was the employee that got the highest bonus. So who was John Lavorato? He was the former head of Enron's trading operations.
 
 Another interesting character that showed up in the financial data was ``Pai Lou.'' From table \ref{tableSubsetEmployeeData}, one can see that he had some of the largest exercised stock options. Apart from the past CEOs and chairmen, he was \emph{the} employee that sold the most Enron stock. He also got some of the largest shares of restricted stock. Its interesting that these men aren't on the POI list in table \ref{tablePoi}. I firmly believe they are probably on the co-conspirators unindicted list.
 
-To gain insights into the relationship between salary and exercised stock options, we took that subset of data and ran a KMeans clustering algorithm on it to see how the data clustered; we focused on three clustered as can be seen from figure \ref{salaryExercisedStock}. The clusters generated matched our intuition about the executives, mostly all the five executives with the highest exercised stock options were clustered as one, as can be seen in the visualization in figure \ref{salaryExercisedStock} by the markers colored blue. It is important to note we were not able to infer a relationship between salary and exercised stock options as we had thought. 
+To gain insights into the relationship between salary and exercised stock options, I took that subset of data and ran a KMeans clustering algorithm on it to see how the data clustered; I focused on three clustered as can be seen from figure \ref{salaryExercisedStock}. The clusters generated matched our intuition about the executives, mostly all the five executives with the highest exercised stock options were clustered as one, as can be seen in the visualization in figure \ref{salaryExercisedStock} by the markers colored blue. It is important to note I was not able to infer a relationship between salary and exercised stock options as I had thought.
 
-We proceeded on, with a hypothesis that more than likely, the executives with the highest salaries, probably also had the highest restricted stock. Just as with exercised stock options, it wasn't the case. From figure \ref{salaryRestrictedStock} one can see that there is a data-point with a salary close to \$200,000, but with over 8 million shares, when most of the other folks around that salary bracket had less than a million shares. Its important to note that for both our visualizations, the KMeans clustering algorithm, clustered the data-points along both the exercised stock options and restricted stocks. 
+I proceeded on, with a hypothesis that more than likely, the executives with the highest salaries, probably also had the highest restricted stock. Just as with exercised stock options, it wasn't the case. From figure \ref{salaryRestrictedStock} one can see that there is a data-point with a salary close to \$200,000, but with over 8 million shares, when most of the other folks around that salary bracket had less than a million shares. Its important to note that for both our visualizations, the KMeans clustering algorithm, clustered the data-points along both the exercised stock options and restricted stocks.
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
@@ -371,7 +366,7 @@ We proceeded on, with a hypothesis that more than likely, the executives with th
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/exercised_stock_options}
     \label{salaryExercisedStock2}}
-    
+
     \caption{\textbf{A closer look at salary and exercised stock options.} \textit{Figure (a) A scatter plot of salary versus exercised stock options. Figure (b) A plot of exercised stock options. From these two plots one can see that there is a small subset of senior executives who exercised a significant amount of Enron shares. }}
 \end{figure}
 
@@ -383,25 +378,25 @@ We proceeded on, with a hypothesis that more than likely, the executives with th
     \subfloat[]{%
     \includegraphics[width=0.6\textwidth]{figures/restricted_stock}
     \label{salaryRestrictedStock2}}
-    
+
     \caption{\textbf{A closer look at salary and restricted stock.} \textit{A scatter plot of salary versus restricted stock. Figure (b) A plot of restricted stock.}}
 \end{figure}
 
 \clearpage
 \section*{Algorithms and Techniques}
 
-For the problem of identifying fraud from the Enron financial and email data, we experimented with four different classifiers, three ensemble methods and a regression:
-\begin{enumerate}% 
+For the problem of identifying fraud from the Enron financial and email data, I experimented with four different classifiers, three ensemble methods and a regression:
+\begin{enumerate}%
 \item A RandomForestClassifier\\
-We selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning. 
+I selected this learner because it is considered one of the best off-the-shelf learning algorithm, and requires almost no tuning.
 \item An ExtraTreesClassifier\\
  Its another ensemble learner like Random Forest, with one caveat. When creating a branch in a tree, Random Forest chooses the most discriminant value, whereas ExtraTrees split point is arbitrarily. This helps to increase the bias slightly and lower the variance even more.
 \item An eXtreme Gradient Boosted (XGBoost) Trees Classifier\\
 XGBoost is an advanced implementation of gradient boosting algorithm. From reading literature on machine learning in practice, the XGBoost classifier has differentiated itself as a classifier that is amenable to wide range of problems from particle physics, to ad click through rate prediction and so on. For example, ``among the 29 challenge winning solutions published at Kaggle's
-blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, we also wanted to see if using this classifier could give us good results with our dataset.
+blog during 2015, 17 solutions used XGBoost'' \cite{ChenG16}. As a result, I also wanted to see if using this classifier could give us good results with our dataset.
 
 \item A LogisticRegression (Robust, with $Lp$ = $L1$) Classifier\\
-Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class. Another reason we selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleansed of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
+Its computational simpler than the ensemble methods. Furthermore, it has been used in real life to predict adverse risk events that have relatively small chances of occurring like credit card fraud and so on. The dataset composition of those events are similar to the Enron dataset, where the labels are heavily skewed towards one class. Another reason I selected the robust LogisticRegression based on the fact that it handles outliers better. While the data has been cleansed of ``outliers,'' there are a few executives whose data-points fall outside of the mean by several standard deviations.
 
 \end{enumerate}
 
@@ -409,46 +404,46 @@ Its computational simpler than the ensemble methods. Furthermore, it has been us
 
 \section*{Benchmark}
 
-For this specific problem, we were unable to acquire benchmarks that we could test the performance of our learners against. However in the notes accompanying the project description, we were tasked to shoot for a precision score of over 0.3. From our four learners, and the initial trials, we have already superseded this number, as can be seen from table \ref{tableBenchMarkScores}.
+For this specific problem, I was unable to acquire benchmarks that I could test the performance of our learners against. However in the notes accompanying the project description, I was tasked to shoot for a precision score of over 0.3. From our four learners, and the initial trials, I have already superseded this number, as can be seen from table \ref{tableBenchMarkScores}.
 
 
 %----------------------------------------------------------------------------------------
-%  CHAPTER 
+%  CHAPTER
 %----------------------------------------------------------------------------------------
 \chapter*{Identify Fraud From Enron Data: Methodology}
 
 \section*{Data Preprocessing}
-Significant data preprocessing wasn't necessary for this problem. Once we cleared our dataset of outliers, we decided to play with a few features to get a feel of how they would behave with the algorithms. 
+Significant data preprocessing wasn't necessary for this problem. Once I cleared our dataset of outliers, I decided to play with a few features to get a feel of how they would behave with the algorithms.
 
-We tested out our four learners with \texttt{salary} and \texttt{bonus} features before we scaled them with a minimax-scaler afterwards. We found no difference, so we decided to forgo scaling.
+I tested out our four learners with \texttt{salary} and \texttt{bonus} features before I scaled them with a minimax-scaler afterwards. I found no difference, so I decided to forgo scaling.
 
-We dropped the feature named \texttt{email\_address} from our dataset because it contained a string, while other features where numeric. Furthermore, we felt that this feature was superfluous with respect to the task. 
+I dropped the feature named \texttt{email\_address} from our dataset because it contained a string, while other features where numeric. Furthermore, I felt that this feature was superfluous with respect to the task.
 
 \section*{Feature Engineering}
-We suspected that there was interdependence of features so we engineered a feature, the ``fraction of emails to and from poi.'' We figured this metric could give us another window into discriminating the data. 
+I suspected that there was interdependence of features so I engineered a feature, the ``fraction of emails to and from poi.'' I figured this metric could give us another window into discriminating the data.
 
 \section*{Feature Selection}
-Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. In the case of the latter we selected a RandomForest classifier as well as a Gradient Boosted Trees---XGBoost---classifier to implement feature selection.
+Our approach to feature selection was based on intuition as well as running the features through feature selection algorithms to guide us in our decision of features to use. In the case of the latter I selected a RandomForest classifier as well as a Gradient Boosted Trees---XGBoost---classifier to implement feature selection.
 
-For the RandomForest algorithm, we used a baseline classifier, we fitted it to our data and used its ``\texttt{feature\_importances\_}'' function to obtain a score on the strength of that feature. To obtain reliable scores, we ran the algorithm a 1000x and averaged the scores of the features to obtain the top $n$ features as visualized in figure \ref{randomForestFeatureImportance}.
+For the RandomForest algorithm, I used a baseline classifier, I fitted it to our data and used its ``\texttt{feature\_importances\_}'' function to obtain a score on the strength of that feature. To obtain reliable scores, I ran the algorithm a 1000x and averaged the scores of the features to obtain the top $n$ features as visualized in figure \ref{randomForestFeatureImportance}.
 
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
     \includegraphics[width=1\textwidth]{figures/randomForestFeatureImportance}
     \label{randomForestFeatureImportance}}
-    
+
     \caption{\textbf{Feature importance as discovered by RandomForest.} \textit{}}
 \end{figure}
 
-For the XGBoost classifier, we took a different approach to obtaining reliable data. We re-sampled the dataset and grew it a 1000x using sklearn's \texttt{StratifiedShuffleSplit} function with a thousand folds. We then fed this more expansive dataset to an \texttt{XGBoost} classifier and applied its \texttt{plot\_importance} function to discover the important features as can be seen from figure \ref{xgboostFeatureImportance}.
+For the XGBoost classifier, I took a different approach to obtaining reliable data. I re-sampled the dataset and grew it a 1000x using sklearn's \texttt{StratifiedShuffleSplit} function with a thousand folds. I then fed this more expansive dataset to an \texttt{XGBoost} classifier and applied its \texttt{plot\_importance} function to discover the important features as can be seen from figure \ref{xgboostFeatureImportance}.
 
 \begin{figure}[!hbtp]
 \centering
     \subfloat[]{%
     \includegraphics[width=1\textwidth]{figures/xgboostFeatureImportance}
     \label{xgboostFeatureImportance}}
-    
+
     \caption{\textbf{Feature importance as discovered by XGboost.} \textit{}}
 \end{figure}
 
@@ -461,47 +456,47 @@ For the XGBoost classifier, we took a different approach to obtaining reliable d
 \hline % inserts single-line
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of Training with \textbf{RandomForest} generated features}\\[5pt]
-\hline 
+\hline
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
+\cline{2-4}
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-ExtraTreesClassifier     &  0.387       &  0.144     &  0.210     \\ 
-LogisticRegression       &  0.416       &  0.170     &  0.241     \\ 
-RandomForestClassifier   &  0.370       &  0.140     &  0.203     \\ 
-XGBClassifier            &  0.441       &  0.200     &  0.275     \\ 
+ExtraTreesClassifier     &  0.387       &  0.144     &  0.210     \\
+LogisticRegression       &  0.416       &  0.170     &  0.241     \\
+RandomForestClassifier   &  0.370       &  0.140     &  0.203     \\
+XGBClassifier            &  0.441       &  0.200     &  0.275     \\
 
 
 \hline% inserts single-line
 
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of training with \textbf{XGBoost} generated features}\\[5pt]
-\hline 
+\hline
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
+\cline{2-4}
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-ExtraTreesClassifier     & 0.454       & 0.174     & 0.252\\     
-LogisticRegression       & 0.293       & 0.200     & 0.237\\     
-RandomForestClassifier   & 0.379       & 0.131     & 0.194\\     
+ExtraTreesClassifier     & 0.454       & 0.174     & 0.252\\
+LogisticRegression       & 0.293       & 0.200     & 0.237\\
+RandomForestClassifier   & 0.379       & 0.131     & 0.194\\
 XGBClassifier            & 0.416       & 0.196     & 0.266\\
 
 \hline% inserts single-line
 
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of training with \textbf{Ad-hoc} features}\\[5pt]
-\hline 
+\hline
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
+\cline{2-4}
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-ExtraTreesClassifier     &  0.449       &  0.140     &  0.213     \\ 
-LogisticRegression       &  0.499       &  0.169     &  0.252     \\ 
-RandomForestClassifier   &  0.404       &  0.146     &  0.215     \\ 
-\hilight{XGBClassifier}  &  \hilight{0.422} &  \hilight{0.299} &  \hilight{0.350}     \\ 
+ExtraTreesClassifier     &  0.449       &  0.140     &  0.213     \\
+LogisticRegression       &  0.499       &  0.169     &  0.252     \\
+RandomForestClassifier   &  0.404       &  0.146     &  0.215     \\
+\hilight{XGBClassifier}  &  \hilight{0.422} &  \hilight{0.299} &  \hilight{0.350}     \\
 
 \hline % inserts single-line
 
@@ -509,9 +504,9 @@ RandomForestClassifier   &  0.404       &  0.146     &  0.215     \\
 \label{tableBenchMarkScores}
 \end{table}
 
-We used these features selected by the algorithms along side our domain guided features on our four baseline learners, the results can be see in table \ref{tableBenchMarkScores}. From this experiment, we decided to go with our ad-hoc generated features because the performance was superior when we considered the $F_1$ score of all four learners. It is important to note that the other features were not woeful in their performance, and overall, these features with baseline classifiers had already put us over the threshold of the benchmark precision score---0.3---we were to surpass.
+I used these features selected by the algorithms along side our domain guided features on our four baseline learners, the results can be see in table \ref{tableBenchMarkScores}. From this experiment, I decided to go with our ad-hoc generated features because the performance was superior when I considered the $F_1$ score of all four learners. It is important to note that the other features were not woeful in their performance, and overall, these features with baseline classifiers had already put us over the threshold of the benchmark precision score---0.3---I was to surpass.
 
-For the final algorithm, we ended up going with our intuition and selecting features that we had explored in the data analysis. These features are as follows: 
+For the final algorithm, I ended up going with our intuition and selecting features that I had explored in the data analysis. These features are as follows:
 \begin{verbatim}
 poi
 bonus
@@ -527,15 +522,15 @@ salary
 
 \section*{Implementation}
 
-We implemented the four learning algorithms. For each of the learners we implemented the baseline algorithm using a stratified shuffle split cross validation with a thousand folds and calculated the precision, recall and $F_1$ scores respectively.
+I implemented the four learning algorithms. For each of the learners I implemented the baseline algorithm using a stratified kfold cross validation with 50 folds and calculated the precision, recall and $F_1$ scores respectively.
 
 
 \section*{Refinement}
-To improve on the performance of the algorithm, we decided to reduce the number of features that were used for training. Through some trial and error, we realized if we held the feature list to the first three features:
+To improve on the performance of the algorithm, I decided to reduce the number of features that were used for training. Through some trial and error, I realized if I held the feature list to the first three features:
 \begin{verbatim}
 bonus
 exercised_stock_options
-restricted_stock 
+restricted_stock
 \end{verbatim}
 Our performance improved dramatically as can be seen in table \ref{tableReducedFeatures}.
 
@@ -545,13 +540,13 @@ Our performance improved dramatically as can be seen in table \ref{tableReducedF
 
 Parameter tuning is the process of discovering \emph{optimal} choices for the hyper-parameters that support a model. These hyper-parameters are parameters that are not part of the \emph{core} specifications for describing a model as a mathematical function, i.e., they are not \emph{learned} during the training phase.
 
-These \emph{hyper}-parameters are the keys we turn that allow us to control for over-fitting. They are the tools we use to restrict the capacity of our models, i.e., how flexible the model can be. These parameters influence to a large extent either the accuracy and or speed of a model. 
+These \emph{hyper}-parameters are the keys I turn that allow us to control for over-fitting. They are the tools I use to restrict the capacity of our models, i.e., how flexible the model can be. These parameters influence to a large extent either the accuracy and or speed of a model.
 
-There are several approaches to \emph{tuning} these parameters, most of them can be considered as a search through some hyper-parameter space. Finding these parameters then becomes finding the right combinations that optimize the performance metric we are interested in optimizing for. The usual way to do that is through a grid search, a randomized grid search or smart tuning. 
+There are several approaches to \emph{tuning} these parameters, most of them can be considered as a search through some hyper-parameter space. Finding these parameters then becomes finding the right combinations that optimize the performance metric I are interested in optimizing for. The usual way to do that is through a grid search, a randomized grid search or smart tuning.
 
 
 
-Once we settled on the features we would be using for our classification task, we tuned our model using sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit} function, we tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters we tuned are as follows:
+Once I settled on the features I would be using for our classification task, I tuned our model using sklearn's \texttt{GridSearch} in conjunction with a \{k=1000 fold\} \texttt{StratifiedShuffleSplit} function, I tuned both the tree parameters as well as the task parameters of our XGBoost classifier to control for over-fitting and improve over all performance. The parameters I tuned are as follows:
 
 \begin{itemize}
 \item Parameters for Tree Booster
@@ -580,10 +575,10 @@ Once we settled on the features we would be using for our classification task, w
             \item Scale the contribution of each tree by learning rate
             \item Range $[0, 1]$, tuned on $[0.01, 0.1, 0.02, 0.2, 0.25, 0.3]$
         \end{itemize}
-    \end{itemize} 
+    \end{itemize}
 \end{itemize}
 
-Once we performed our search through the hyper-parameter space to find the combination of hyper-parameters that maximized the performance of our classifier, we were able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
+Once I performed our search through the hyper-parameter space to find the combination of hyper-parameters that maximized the performance of our classifier, I was able to improve the previous $F_1$ score by 7.2\%. Here is the final model for classifying persons of interest in the Enron fraud case.
 \begin{verbatim}
 XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
        gamma=0, learning_rate=0.02, max_delta_step=1, max_depth=3,
@@ -598,35 +593,35 @@ XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=1,
 
 \textbf{Question} Discuss validation and its importance.
 
-\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over-fitting, we hold out a piece of the data and use it as a \textbf{test} set. This is what is meant by validation. 
+\textbf{Answer} When the learning algorithm is in the process of discovering the ideal function which describes the data, in order to prevent over-fitting, I hold out a piece of the data and use it as a \textbf{test} set. This is what is meant by validation.
 
-If \texttt{GridSearchCV} is used to optimize hyper-parameters in our model, and we test those hyper-parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on. 
+If \texttt{GridSearchCV} is used to optimize hyper-parameters in our model, and I test those hyper-parameters out on the \textbf{test} set, information from that sample can eventually leak into our model, which reduces its ability to generalize. As a means of preventing this, a sample of the data is held out in an \textbf{evaluation} set which the algorithm tests on.
 
 Each combination of parameters is evaluated against this evaluation set. A method of doing this is called \textbf{cross validation}, i.e., a process of testing out hyper-parameter optimization on a data sample that is independent of both the testing and training data.
 
-In the case of \textbf{K-fold CV} the data set is divided into $k$ subsets, and the holdout method is repeated $k$ times. Each time, one of the $k$ subsets is used as the test set and the other $k-1$ subsets are put together to form a training set. Then the average error across all $k$ trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set $k-1$ times. Once the hyper-parameters are optimally tuned, one can test the efficacy of the final model on the test set. 
+In the case of \textbf{K-fold CV} the data set is divided into $k$ subsets, and the holdout method is repeated $k$ times. Each time, one of the $k$ subsets is used as the test set and the other $k-1$ subsets are put together to form a training set. Then the average error across all $k$ trials is computed. The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set $k-1$ times. Once the hyper-parameters are optimally tuned, one can test the efficacy of the final model on the test set.
 
-In our case with a small-\emph{highly}-skewed dataset, K-fold cross validation is especially useful when used in conjunction with \texttt{GridSearchCV}. We know that the final parameters that result from the process are those that accurately optimize the performance metric. 
+In our case with a small-\emph{highly}-skewed dataset, K-fold cross validation is especially useful when used in conjunction with \texttt{GridSearchCV}. I know that the final parameters that result from the process are those that accurately optimize the performance metric.
 
-To validate our model, we used sklearn's \texttt{StratifiedShuffleSplit} using \{k=1000\}. We trained our four models on the reduced features we found through trial and error and recorded their performance. 
+To validate our model, I used sklearn's \texttt{StratifiedShuffleSplit} using \{k=1000\}. I trained our four models on the reduced features I found through trial and error and recorded their performance.
 
 
 \section*{Model Evaluation}
 
-To evaluate the performance of our algorithms, we used the following metrics:
+To evaluate the performance of our algorithms, I used the following metrics:
 \begin{enumerate}
-\item Precision 
-\item Recall 
+\item Precision
+\item Recall
 \item $F_1$ score
 \end{enumerate}
 
-From our trials we recorded the scores for each of our metrics as can be seen in table \ref{tableReducedFeatures}. 
+From our trials I recorded the scores for each of our metrics as can be seen in table \ref{tableReducedFeatures}.
 
-The LogisticRegression had the highest precision score. With regards to this dataset, it means that whenever a POI gets flagged in the test set, we know with a lot of confidence that it's very likely to be a real POI and not a false alarm. On the other hand, it had a low recall score, which means that sometimes it misses real POIs.  
+The LogisticRegression had the highest precision score. With regards to this dataset, it means that whenever a POI gets flagged in the test set, I know with a lot of confidence that it's very likely to be a real POI and not a false alarm. On the other hand, it had a low recall score, which means that sometimes it misses real POIs.
 
-While the XGBClassifier did not have the highest precision score, it had the highest recall score. This means that nearly every time a POI is in the test set, we are able to classify them. 
+While the XGBClassifier did not have the highest precision score, it had the highest recall score. This means that nearly every time a POI is in the test set, I are able to classify them.
 
-Furthermore, the XGBClassifier had the best $F_1$ score. For this problem, this is the best we can do. Both the false positive and false negative rates are relatively low, which means that the model can identify POI's reliably and accurately. As a result the \textbf{XGBClassifier} was the most apt model for this problem.
+Furthermore, the XGBClassifier had the best $F_1$ score. For this problem, this is the best I can do. Both the false positive and false negative rates are relatively low, which means that the model can identify POI's reliably and accurately. As a result the \textbf{XGBClassifier} was the most apt model for this problem.
 
 
 
@@ -637,32 +632,32 @@ Furthermore, the XGBClassifier had the best $F_1$ score. For this problem, this 
 \begin{tabular}{|p{6cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|} % creating four columns
 \hline % inserts single-line
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
+\cline{2-4}
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-ExtraTreesClassifier     &  0.490       &  0.181     &  0.264     \\ 
-LogisticRegression       &  0.630       &  0.202     &  0.306     \\ 
-RandomForestClassifier   &  0.483       &  0.190     &  0.272     \\ 
-XGBClassifier            &  0.505       &  0.332     &  0.400     \\ 
+ExtraTreesClassifier     &  0.490       &  0.181     &  0.264     \\
+LogisticRegression       &  0.630       &  0.202     &  0.306     \\
+RandomForestClassifier   &  0.483       &  0.190     &  0.272     \\
+XGBClassifier            &  0.505       &  0.332     &  0.400     \\
 \hline% inserts single-line
 
 \multicolumn{4}{|c|}{}\\
 \multicolumn{4}{|c|}{Result of tuning the \textbf{XGBoost} classifier}\\[5pt]
 \hline
 & \multicolumn{3}{c|}{Metrics}\\[5pt]
-\cline{2-4} 
+\cline{2-4}
 & Precision & Recall & F1\\[0.5ex]
 \hline % inserts single-line
 
-XGBClassifier           &  0.617  & 0.331  & 0.431\\ 
+XGBClassifier           &  0.617  & 0.331  & 0.431\\
 \hline
 \end{tabular}
 \label{tableReducedFeatures}
-\end{table} 
+\end{table}
 
 %----------------------------------------------------------------------------------------
-%  CHAPTER 
+%  CHAPTER
 %----------------------------------------------------------------------------------------
 
 \chapter*{Identify Fraud From Enron Data: Conclusion}
@@ -670,26 +665,26 @@ XGBClassifier           &  0.617  & 0.331  & 0.431\\
 
 \section*{Reflection}
 
-We have presented a solution to identifying ``persons of interest'' who \textit{might} have played a significant role in perpetuating fraud at Enron from their finance and email data. 
+I have presented a solution to identifying ``persons of interest'' who \textit{might} have played a significant role in perpetuating fraud at Enron from their finance and email data.
 
-We begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. We then proceeded by doing a rigorous analysis on the dataset. 
+I begun our solution by reading about the fraud and watching a couple of documentaries around it to understand the context in which the problem occurred. I then proceeded by doing a rigorous analysis on the dataset.
 
-The first thing we noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery we realized we would need to pay careful attention to the metrics of performance we used for choosing the appropriate algorithm. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, a combination of both the ``precision'' and ``recall'' as realized in the ``$F_1$'' score was the more apt choice.
+The first thing I noticed was the skew of the dataset towards negative examples of persons of interest. From this discovery I realized I would need to pay careful attention to the metrics of performance I used for choosing the appropriate algorithm. In most cases, ``Accuracy'' of the classifier would be considered a \textit{good} metric to use, but because of the imbalance in the data, a combination of both the ``precision'' and ``recall'' as realized in the ``$F_1$'' score was the more apt choice.
 
-From our analysis we discovered some outliers and removed them from the dataset. We took a close look at ``exercised stock options'' and ``restricted stocks'' to see how the senior executives were compensated. Based on our working hypothesis that if fraud was indeed been fomented at Enron, then more than likely the vehicle that the senior officers would take to get the money out would be through an inflated allocation of shares. 
+From our analysis I discovered some outliers and removed them from the dataset. I took a close look at ``exercised stock options'' and ``restricted stocks'' to see how the senior executives were compensated. Based on our working hypothesis that if fraud was indeed been fomented at Enron, then more than likely the vehicle that the senior officers would take to get the money out would be through an inflated allocation of shares.
 
-We selected three ensemble learners (Random Forest, Extra Trees, eXtreme Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. We selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since we didn't have existing benchmarks we could use to reason about the effectiveness of our approach, we resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
+I selected three ensemble learners (Random Forest, Extra Trees, eXtreme Gradient Boosted Trees) and one regression (Robust) as algorithms to explore in discriminating this dataset. I selected these algorithms for their ease of interpret-ability with respect to understanding which features played the most important role is classifying the data. Since I didn't have existing benchmarks I could use to reason about the effectiveness of our approach, I resorted to using the precision benchmark of a score over 0.3 as the goal to surpass.
 
-We experimented with feature selection algorithms, but eventually went with ad-hoc features that we selected based on intuition on domain knowledge. From our learning experiments we selected the eXtreme Boosted Trees classifier as the learner to use. We reduced our feature space and tuned our classifier to achieve this final score, \{$F_1$: 0.431, precision: 0.617, recall: 0.331\}.
+I experimented with feature selection algorithms, but eventually went with ad-hoc features that I selected based on intuition on domain knowledge. From our learning experiments I selected the eXtreme Boosted Trees classifier as the learner to use. I reduced our feature space and tuned our classifier to achieve this final score, \{$F_1$: 0.431, precision: 0.617, recall: 0.331\}.
 
 \section*{Improvement}
-One of the more interesting aspect of this project was the selected features that were used for the final classifier; all those features came from the financial data. When we took away the feature that we engineered from the email data as well as other features from the email data, we got an increase in performance. 
+One of the more interesting aspect of this project was the selected features that were used for the final classifier; all those features came from the financial data. When I took away the feature that I engineered from the email data as well as other features from the email data, I got an increase in performance.
 
-We believe we could get more additive data from the Enron emails by performing some natural language understanding techniques and then adding those features to the dataset.
+I believe I could get more additive data from the Enron emails by performing some natural language understanding techniques and then adding those features to the dataset.
 
-With respect to the algorithms used, there a definite ways these algorithms could be improved upon. We only optimized for four hyper-parameters for our eXtreme Gradient Boosted trees. That algorithm has many more hyper-parameters that could yield a stronger model.
+With respect to the algorithms used, there a definite ways these algorithms could be improved upon. I only optimized for four hyper-parameters for our eXtreme Gradient Boosted trees. That algorithm has many more hyper-parameters that could yield a stronger model.
 
-If time was not a factor, we could create a pipeline that used Grid Search to go through a combination of features while optimizing the XGBoost algorithm for its own hyper-parameters. We could do an exhaustive search of this feature + hyper-parameters space to obtain a model that would be most optimal for describing this data.
+If time was not a factor, I could create a pipeline that used Grid Search to go through a combination of features while optimizing the XGBoost algorithm for its own hyper-parameters. I could do an exhaustive search of this feature + hyper-parameters space to obtain a model that would be most optimal for describing this data.
 
 
 
@@ -706,7 +701,3 @@ If time was not a factor, we could create a pipeline that used Grid Search to go
 
 
 \end{document}
-
-
-
-
